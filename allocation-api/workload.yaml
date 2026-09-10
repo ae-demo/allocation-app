@@ -1,0 +1,33 @@
+apiVersion: openchoreo.dev/v1alpha1
+metadata:
+  name: allocation-api
+
+endpoints:
+  - name: http
+    type: HTTP
+    port: 9090
+    basePath: /
+    visibility:
+      - project
+      - internal
+      - external
+
+dependencies:
+  resources:
+    - ref: allocation-app-al-7c1ec557
+      envBindings:
+        dbname: ALLOCATION_DB_DBNAME
+        host: ALLOCATION_DB_HOST
+        password: ALLOCATION_DB_PASSWORD
+        port: ALLOCATION_DB_PORT
+        user: ALLOCATION_DB_USER
+    - ref: allocation-app-thunder
+      envBindings:
+        client_id: THUNDER_CLIENT_ID
+        issuer: THUNDER_ISSUER
+        jwks_url: THUNDER_JWKS_URL
+        scopes: THUNDER_SCOPES
+    - ref: allocation-app-sendgrid
+      envBindings:
+        SENDGRID_API_KEY: SENDGRID_API_KEY
+        SENDGRID_FROM_EMAIL: SENDGRID_FROM_EMAIL
