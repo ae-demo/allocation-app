@@ -60,7 +60,14 @@
     {
       "kind": "external",
       "name": "sendgrid",
-      "description": "Sends email notifications for allocation-request and allocation-decision events."
+      "description": "Sends email notifications for allocation-request and allocation-decision events.",
+      "wiring": {
+        "ref": "allocation-app-sendgrid",
+        "envBindings": {
+          "SENDGRID_API_KEY": "SENDGRID_API_KEY",
+          "SENDGRID_FROM_EMAIL": "SENDGRID_FROM_EMAIL"
+        }
+      }
     }
   ],
   "exposesAPI": {
