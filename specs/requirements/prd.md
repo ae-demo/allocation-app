@@ -35,7 +35,7 @@ A web application that lets Admins set up customers, engagements, and the team m
 - Sign-in is via SSO through Thunder, the platform identity provider (org default).
 - Allocation workflow is request-then-approval: an Account Manager submits a staffing request for an engagement, and a Resource Manager reviews it, then either assigns a team member or rejects it.
 - Each allocation captures: team member, engagement, role on the engagement, utilization % (share of the team member's time), and a start/end date range.
-- Relevant parties are notified by email of allocation-request and allocation-decision events, using Resend, the organization's transactional email provider: Resource Managers are notified of new requests, and the requesting Account Manager plus the affected Team Member are notified of decisions and assignments.
+- Relevant parties are notified by email of allocation-request and allocation-decision events, using SendGrid: Resource Managers are notified of new requests, and the requesting Account Manager plus the affected Team Member are notified of decisions and assignments.
 
 ## Out of Scope
 

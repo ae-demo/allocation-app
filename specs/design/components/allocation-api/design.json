@@ -21,7 +21,7 @@
     11,
     12
   ],
-  "description": "Owns customers, engagements, staffing plans, the team member directory, allocation requests, and allocations. Exposes REST endpoints for creating/managing customers and engagements, submitting and reviewing allocation requests, assigning/modifying allocations, and reporting utilization. Sends email notifications via Resend on request/decision events. Does not render any UI and does not issue its own auth tokens — the gateway validates tokens issued by Thunder.",
+  "description": "Owns customers, engagements, staffing plans, the team member directory, allocation requests, and allocations. Exposes REST endpoints for creating/managing customers and engagements, submitting and reviewing allocation requests, assigning/modifying allocations, and reporting utilization. Sends email notifications via SendGrid on request/decision events. Does not render any UI and does not issue its own auth tokens — the gateway validates tokens issued by Thunder.",
   "dependencies": [
     {
       "kind": "platform-resource",
@@ -59,7 +59,7 @@
     },
     {
       "kind": "external",
-      "name": "resend",
+      "name": "sendgrid",
       "description": "Sends email notifications for allocation-request and allocation-decision events."
     }
   ],

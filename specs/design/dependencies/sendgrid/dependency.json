@@ -1,0 +1,17 @@
+{
+  "name": "sendgrid",
+  "description": "Sends transactional email notifications for allocation-request and allocation-decision events.",
+  "provider": "SendGrid",
+  "style": "rest-api",
+  "contract": "openapi.yaml",
+  "provenance": {
+    "sourceUrl": "https://raw.githubusercontent.com/twilio/sendgrid-oai/main/spec/json/tsg_mail_v3.json",
+    "sha256": "4ba24d0feb8a6b347f60528161d1cf0e7591987d2b3a64a6533685dc2b39d19f",
+    "fetchedAt": "2026-09-10T09:42:09Z",
+    "sliced": true
+  },
+  "config": [
+    { "key": "SENDGRID_API_KEY", "secret": true, "description": "Your SendGrid API key, used as a Bearer token when calling the Mail Send API" },
+    { "key": "SENDGRID_FROM_EMAIL", "description": "The verified sender email address notifications are sent from" }
+  ]
+}
