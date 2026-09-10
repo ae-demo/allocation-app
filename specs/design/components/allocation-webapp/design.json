@@ -1,0 +1,17 @@
+{
+  "name": "allocation-webapp",
+  "type": "web-application",
+  "version": "0.1.0",
+  "language": "TypeScript",
+  "buildpack": "docker",
+  "appPath": "allocation-webapp",
+  "entrypoint": "deployment/web-application",
+  "exposure": "internet",
+  "dependencies": [
+    { "kind": "component", "name": "allocation-api" },
+    { "kind": "platform-resource", "name": "thunder", "resourceType": "thunder-app" }
+  ],
+  "description": "The single-page app used by Admins, Account Managers, Resource Managers, and Team Members: customer/engagement management, staffing plans, allocation request submission/review, allocation assignment, the team member directory, and utilization/allocation views scoped by role. Calls allocation-api for all data; holds no business logic of its own.",
+  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "skillsPinned": ["wireframes", "react-webapp", "oxygen-ui-design-system", "thunder-authentication"]
+}

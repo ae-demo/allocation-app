@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "coldStartRole": "Team Member",
+  "publicComponents": [],
+  "roles": [
+    {
+      "name": "Team Member",
+      "description": "Views their own current and upcoming allocations across engagements.",
+      "stories": [9],
+      "grantedBy": "first sign-in",
+      "permissions": [
+        { "component": "allocation-api", "actions": ["read own allocations"] },
+        { "component": "allocation-webapp", "screens": ["My Allocations"] }
+      ]
+    },
+    {
+      "name": "Account Manager",
+      "description": "Creates and manages customers and engagements, defines staffing plans, and submits allocation requests.",
+      "stories": [1, 3, 6, 11, 12],
+      "grantedBy": "Allocation Admin",
+      "permissions": [
+        { "component": "allocation-api", "actions": ["manage customers", "manage engagements", "manage staffing plans", "create allocation requests"] },
+        { "component": "allocation-webapp", "screens": ["Customers", "Engagement Detail", "New Engagement", "New Allocation Request"] }
+      ]
+    },
+    {
+      "name": "Resource Manager",
+      "description": "Reviews, approves, and rejects allocation requests, assigns team members to engagements, and manages existing allocations.",
+      "stories": [4, 5, 6, 7, 8],
+      "grantedBy": "Allocation Admin",
+      "permissions": [
+        { "component": "allocation-api", "actions": ["review allocation requests", "approve or reject allocation requests", "manage allocations"] },
+        { "component": "allocation-webapp", "screens": ["Allocation Requests", "Allocations Overview", "Assign Team Member"] }
+      ]
+    },
+    {
+      "name": "Allocation Admin",
+      "description": "Maintains the team member directory, views organization-wide utilization reporting, and grants the Account Manager and Resource Manager roles.",
+      "stories": [2, 10],
+      "grantedBy": "Allocation Admin",
+      "permissions": [
+        { "component": "allocation-api", "actions": ["manage team member directory", "view utilization report"] },
+        { "component": "allocation-webapp", "screens": ["Team Members", "Utilization Report"] }
+      ]
+    }
+  ],
+  "testUsers": [
+    { "username": "test-team-member", "role": "Team Member" },
+    { "username": "test-account-manager", "role": "Account Manager" },
+    { "username": "test-resource-manager", "role": "Resource Manager" },
+    { "username": "test-allocation-admin", "role": "Allocation Admin" }
+  ],
+  "thunder": {
+    "name": "Allocation App",
+    "type": "browser",
+    "scopes": "openid profile email group ou"
+  }
+}

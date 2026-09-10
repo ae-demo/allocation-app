@@ -1,0 +1,18 @@
+{
+  "name": "allocation-api",
+  "type": "service",
+  "version": "0.1.0",
+  "language": "Ballerina",
+  "buildpack": "docker",
+  "appPath": "allocation-api",
+  "entrypoint": "deployment/service",
+  "exposure": "intranet",
+  "dependencies": [
+    { "kind": "platform-resource", "name": "allocation-db", "resourceType": "postgres-cnpg", "parameters": { "instances": 1, "storage": "1Gi", "version": "16" } },
+    { "kind": "platform-resource", "name": "thunder", "resourceType": "thunder-app" },
+    { "kind": "external", "name": "resend", "description": "Sends email notifications for allocation-request and allocation-decision events." }
+  ],
+  "description": "Owns customers, engagements, staffing plans, the team member directory, allocation requests, and allocations. Exposes REST endpoints for creating/managing customers and engagements, submitting and reviewing allocation requests, assigning/modifying allocations, and reporting utilization. Sends email notifications via Resend on request/decision events. Does not render any UI and does not issue its own auth tokens — the gateway validates tokens issued by Thunder.",
+  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "skillsPinned": ["openapi-conventions", "ballerina", "api-management", "thunder-authentication"]
+}
