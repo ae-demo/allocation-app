@@ -1,0 +1,7 @@
+{
+  "targets": {
+    "allocation-api": "https://development-default.apps.94.72.97.95.sslip.io:443/allocation-app-allocation-api-http",
+    "allocation-webapp": "https://http-allocation-ap-development-default-48325815.apps.94.72.97.95.sslip.io:443/"
+  },
+  "primary": "allocation-webapp"
+}
