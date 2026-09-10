@@ -17,7 +17,7 @@ A web application that lets Admins set up customers, engagements, and the team m
 
 ## User Stories
 
-1. As an Account Manager, I want to create and manage customers and their engagements, so that there is somewhere to allocate team members against.
+1. As an Account Manager, I want to create and manage customers and their engagements, so that there is somewhere to allocate team members against. [Customers &amp; Engagements](features/customers-and-engagements.md)
 2. As an Admin, I want to maintain a directory of team members, so that Resource Managers know who is available to allocate.
 3. As an Account Manager, I want to submit an allocation request for an engagement — specifying the role needed, the utilization % required, and the date range — so that a Resource Manager can find and assign the right person.
 4. As a Resource Manager, I want to review pending allocation requests, so that I can decide whether to approve or reject each one.
@@ -27,6 +27,8 @@ A web application that lets Admins set up customers, engagements, and the team m
 8. As a Resource Manager, I want to modify or end an existing allocation, so that changes in engagement needs are reflected promptly.
 9. As a Team Member, I want to view my current and upcoming allocations across engagements, so that I know where I am expected to work and at what utilization.
 10. As an Admin, I want to view a utilization report across all team members, so that I can track overall organizational capacity.
+11. As an Account Manager, I want to define a staffing plan for an engagement (roles and target headcount), so that I can track overall staffing needs before submitting individual allocation requests. [Customers &amp; Engagements](features/customers-and-engagements.md)
+12. As an Account Manager, I want to close an engagement once its work is complete, so that it no longer accepts new allocation requests. [Customers &amp; Engagements](features/customers-and-engagements.md)
 
 ## Product Decisions
 
