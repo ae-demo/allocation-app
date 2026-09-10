@@ -1,0 +1,27 @@
+apiVersion: openchoreo.dev/v1alpha1
+metadata:
+  name: allocation-webapp
+
+endpoints:
+  - name: http
+    type: HTTP
+    port: 9090
+    basePath: /
+    visibility:
+      - project
+      - external
+
+dependencies:
+  endpoints:
+    - component: allocation-app-allocation-api
+      name: http
+      visibility: project
+      envBindings:
+        address: ALLOCATION_API_URL
+  resources:
+    - ref: allocation-app-thunder
+      envBindings:
+        client_id: THUNDER_CLIENT_ID
+        issuer: THUNDER_ISSUER
+        jwks_url: THUNDER_JWKS_URL
+        scopes: THUNDER_SCOPES
