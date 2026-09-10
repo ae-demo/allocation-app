@@ -1,0 +1,4 @@
+apiVersion = "agentic-engineer/v1"
+name = "allocation-app"
+createdAt = "2026-09-10T09:15:55Z"
+idea = "I need to build an application to manage the allocations in my organization. we use allocations to allocate team members for customer engagements."
