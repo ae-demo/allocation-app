@@ -7,11 +7,55 @@
   "appPath": "allocation-webapp",
   "entrypoint": "deployment/web-application",
   "exposure": "internet",
-  "dependencies": [
-    { "kind": "component", "name": "allocation-api" },
-    { "kind": "platform-resource", "name": "thunder", "resourceType": "thunder-app" }
+  "stories": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
   ],
   "description": "The single-page app used by Admins, Account Managers, Resource Managers, and Team Members: customer/engagement management, staffing plans, allocation request submission/review, allocation assignment, the team member directory, and utilization/allocation views scoped by role. Calls allocation-api for all data; holds no business logic of its own.",
-  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  "skillsPinned": ["wireframes", "react-webapp", "oxygen-ui-design-system", "thunder-authentication"]
+  "dependencies": [
+    {
+      "kind": "component",
+      "name": "allocation-api",
+      "wiring": {
+        "endpoint": {
+          "component": "allocation-app-allocation-api",
+          "name": "http",
+          "visibility": "project",
+          "envBindings": {
+            "address": "ALLOCATION_API_URL"
+          }
+        }
+      }
+    },
+    {
+      "kind": "platform-resource",
+      "name": "thunder",
+      "resourceType": "thunder-app",
+      "wiring": {
+        "ref": "allocation-app-thunder",
+        "envBindings": {
+          "client_id": "THUNDER_CLIENT_ID",
+          "issuer": "THUNDER_ISSUER",
+          "jwks_url": "THUNDER_JWKS_URL",
+          "scopes": "THUNDER_SCOPES"
+        }
+      }
+    }
+  ],
+  "skillsPinned": [
+    "wireframes",
+    "react-webapp",
+    "oxygen-ui-design-system",
+    "thunder-authentication"
+  ]
 }

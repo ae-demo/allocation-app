@@ -7,12 +7,69 @@
   "appPath": "allocation-api",
   "entrypoint": "deployment/service",
   "exposure": "intranet",
-  "dependencies": [
-    { "kind": "platform-resource", "name": "allocation-db", "resourceType": "postgres-cnpg", "parameters": { "instances": 1, "storage": "1Gi", "version": "16" } },
-    { "kind": "platform-resource", "name": "thunder", "resourceType": "thunder-app" },
-    { "kind": "external", "name": "resend", "description": "Sends email notifications for allocation-request and allocation-decision events." }
+  "stories": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
   ],
   "description": "Owns customers, engagements, staffing plans, the team member directory, allocation requests, and allocations. Exposes REST endpoints for creating/managing customers and engagements, submitting and reviewing allocation requests, assigning/modifying allocations, and reporting utilization. Sends email notifications via Resend on request/decision events. Does not render any UI and does not issue its own auth tokens — the gateway validates tokens issued by Thunder.",
-  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  "skillsPinned": ["openapi-conventions", "ballerina", "api-management", "thunder-authentication"]
+  "dependencies": [
+    {
+      "kind": "platform-resource",
+      "name": "allocation-db",
+      "resourceType": "postgres-cnpg",
+      "parameters": {
+        "instances": 1,
+        "storage": "1Gi",
+        "version": "16"
+      },
+      "wiring": {
+        "ref": "allocation-app-al-7c1ec557",
+        "envBindings": {
+          "dbname": "ALLOCATION_DB_DBNAME",
+          "host": "ALLOCATION_DB_HOST",
+          "password": "ALLOCATION_DB_PASSWORD",
+          "port": "ALLOCATION_DB_PORT",
+          "user": "ALLOCATION_DB_USER"
+        }
+      }
+    },
+    {
+      "kind": "platform-resource",
+      "name": "thunder",
+      "resourceType": "thunder-app",
+      "wiring": {
+        "ref": "allocation-app-thunder",
+        "envBindings": {
+          "client_id": "THUNDER_CLIENT_ID",
+          "issuer": "THUNDER_ISSUER",
+          "jwks_url": "THUNDER_JWKS_URL",
+          "scopes": "THUNDER_SCOPES"
+        }
+      }
+    },
+    {
+      "kind": "external",
+      "name": "resend",
+      "description": "Sends email notifications for allocation-request and allocation-decision events."
+    }
+  ],
+  "exposesAPI": {
+    "auth": "end-user-required"
+  },
+  "skillsPinned": [
+    "openapi-conventions",
+    "ballerina",
+    "api-management",
+    "thunder-authentication"
+  ]
 }
