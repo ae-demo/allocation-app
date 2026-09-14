@@ -43,6 +43,51 @@ driven client-side from the Thunder ID token's `groups` claim and works
 correctly independent of this bug — confirmed by observing each role's distinct
 sidebar after login.
 
+## Update (2026-09-14, this validation run): the API is now unreachable outright
+
+Re-verified live before authoring any spec. The defect above (per-caller-role
+403) is **no longer what's observable** — it has been superseded by a more
+severe, live outage: **every authenticated request to `allocation-api` now
+times out with HTTP 504 `upstream request timeout`**, regardless of role or
+endpoint. Reproduced independently three ways:
+
+- `curl` directly against the API's own ingress with a live Account Manager
+  bearer token, on `GET /customers?limit=100`: `504`, body
+  `upstream request timeout`, consistently across 3 attempts (~15s each).
+- The same request replayed after a 20s cool-down: still `504`.
+- playwright-cli, logged in live as Account Manager (webapp calls
+  `/api/customers` and `/api/engagements`) and separately as Team Member
+  (webapp calls `/api/allocations`) — both time out at 504 after 15s, and the
+  webapp renders an `alert` reading "Could not load customers." (or the
+  equivalent for the resource being fetched).
+- An **unauthenticated** request to the same API path returns instantly
+  (`401 Unauthorized`, ~17ms) — so the outage is specific to the authenticated
+  code path (post-token-validation), not the ingress or the API process being
+  down outright.
+
+This means Team Member's own "My Allocations" view — the one screen that
+worked under the previous 403-based finding — **also now fails**: the
+API call it depends on times out the same as every other role's.
+
+**Consequence for this run's criteria:** every criterion whose flow requires
+an authenticated `allocation-api` call (i.e. all of REQ-001 through REQ-012,
+and the data-dependent half of REQ-013) is expected to fail genuinely against
+the live app. Only:
+
+- **AC-013-a** (unauthenticated redirect to Thunder sign-in) — no API call
+  involved, expected to pass.
+- **AC-013-b** (role-based sidebar nav) — driven client-side from the ID
+  token's `groups` claim, rendered before/independent of the broken data
+  fetch (observed: the sidebar renders correctly even while the main content
+  area still shows its loading spinner or error alert) — expected to pass.
+
+Each affected spec is authored to do exactly what its criterion's `must`
+requires, asserting the successful outcome the criterion describes. It is
+expected to, and will, fail live with a timeout/error-alert signature. Per
+`healing.md` ("App itself misbehaves ... → genuine. Do not touch the spec"),
+these are left red and reported as failures, not healed — this is a single
+root-caused platform outage, not 30 independent brittle tests.
+
 ---
 
 ## AC-001-a — An Account Manager can create a customer with name and primary contact info
