@@ -12,16 +12,24 @@ const EXPECTED_LINKS: Record<Role, string[]> = {
   teamMember: ["My Allocations"],
 };
 
-for (const role of Object.keys(EXPECTED_LINKS) as Role[]) {
-  test(`AC-013-b: a signed-in ${role} only sees the screens and actions permitted by their role`, async ({
-    page,
-  }) => {
-    await loginAs(page, role);
-    const nav = page.getByRole("navigation");
-    const expected = EXPECTED_LINKS[role];
-    for (const name of expected) {
-      await expect(nav.getByRole("link", { name, exact: true })).toBeVisible();
-    }
-    await expect(nav.getByRole("link")).toHaveCount(expected.length);
-  });
-}
+test("AC-013-b: a signed-in user only sees the screens and actions permitted by their role", async ({ browser }) => {
+  // Four full SSO round-trips (one per role) in sequence; each takes
+  // ~15-20s live, well past the default 30s test timeout.
+  test.setTimeout(120_000);
+  for (const role of Object.keys(EXPECTED_LINKS) as Role[]) {
+    // A fresh, isolated context per role so one role's session cookies
+    // never bleed into the next role's sign-in.
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await test.step(role, async () => {
+      await loginAs(page, role);
+      const nav = page.getByRole("navigation");
+      const expected = EXPECTED_LINKS[role];
+      for (const name of expected) {
+        await expect(nav.getByRole("link", { name, exact: true })).toBeVisible();
+      }
+      await expect(nav.getByRole("link")).toHaveCount(expected.length);
+    });
+    await context.close();
+  }
+});
