@@ -1,0 +1,6 @@
+node_modules/
+test-results/
+playwright-report/
+heal-log.json
+.playwright-cli/
+storage-state/
