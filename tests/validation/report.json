@@ -1,0 +1,972 @@
+{
+  "schemaVersion": 1,
+  "issue": 10,
+  "commit": "20f73f3cf17ca99ac89b806a93d3dadc7974463e",
+  "generatedAt": "2026-09-14T13:03:31.084Z",
+  "playwrightVersion": "1.61.1",
+  "batches": [
+    {
+      "file": "2026-09-14T12-23-30-522Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-30-44-924Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-30-52-355Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-31-27-306Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-31-41-041Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-32-10-810Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-32-23-932Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-32-52-539Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-33-10-965Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-33-24-928Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-33-44-237Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-33-57-953Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-34-08-639Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-34-18-499Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-34-34-214Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-34-46-343Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-34-55-027Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-35-10-637Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-35-25-448Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-35-32-819Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-35-47-768Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-36-04-153Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-36-11-921Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-36-24-928Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-36-41-803Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-36-50-650Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-37-02-625Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-37-19-836Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-37-26-423Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-37-40-423Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-37-55-943Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-38-02-333Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-38-17-335Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-38-32-625Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-38-37-815Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-38-53-645Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-39-09-195Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-39-14-008Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-39-29-854Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-39-45-027Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-39-49-542Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-40-08-783Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-40-22-314Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-40-28-075Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-40-51-126Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-41-07-352Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-41-09-455Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-41-27-114Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-41-46-293Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-41-49-936Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-42-03-601Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-42-22-264Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-42-27-757Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-42-39-505Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-42-59-148Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-43-16-336Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-43-32-924Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-43-48-168Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-43-59-602Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-44-05-850Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-44-22-898Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-44-40-234Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-44-40-411Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-44-56-773Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-45-16-951Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-45-17-749Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-45-32-235Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-45-52-915Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-46-07-408Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-46-19-038Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-46-41-263Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-46-53-613Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-47-16-842Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-47-26-730Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-47-50-329Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-48-05-656Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T12-48-22-450Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T13-00-12-828Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T13-00-56-934Z.json",
+      "specs": 1
+    },
+    {
+      "file": "2026-09-14T13-02-03-405Z.json",
+      "specs": 1
+    }
+  ],
+  "totals": {
+    "e2e": {
+      "total": 35,
+      "pass": 2,
+      "fail": 33,
+      "notRun": 0
+    },
+    "manual": 3,
+    "scenario": 0
+  },
+  "criteria": [
+    {
+      "id": "AC-001-a",
+      "requirementId": "REQ-001",
+      "must": "An Account Manager can create a customer with name and primary contact info",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-001-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 30243,
+      "failure": {
+        "message": "Test timeout of 30000ms exceeded.",
+        "location": "AC-001-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-32-10-810Z.json"
+    },
+    {
+      "id": "AC-001-b",
+      "requirementId": "REQ-001",
+      "must": "An Account Manager can create an engagement under a customer with name, description, and date range",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-001-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 26991,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Engagement Parent Co 1789389222827' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Engagement Parent Co 1789389222827' })\n",
+        "location": "AC-001-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-33-24-928Z.json"
+    },
+    {
+      "id": "AC-001-c",
+      "requirementId": "REQ-001",
+      "must": "An Account Manager can edit a customer or engagement they created",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-001-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28859,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Edit Test Co 1789389293799' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Edit Test Co 1789389293799' })\n",
+        "location": "AC-001-c.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-34-34-214Z.json"
+    },
+    {
+      "id": "AC-001-d",
+      "requirementId": "REQ-001",
+      "must": "Any Account Manager can view any customer or engagement",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-001-d.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 27993,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('columnheader', { name: 'Customer' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('columnheader', { name: 'Customer' })\n",
+        "location": "AC-001-d.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-35-47-768Z.json"
+    },
+    {
+      "id": "AC-002-a",
+      "requirementId": "REQ-002",
+      "must": "An Admin can add a team member to the directory",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-002-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28384,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('E2E Team Member 1789389164663')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText('E2E Team Member 1789389164663')\n",
+        "location": "AC-002-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-32-23-932Z.json"
+    },
+    {
+      "id": "AC-002-b",
+      "requirementId": "REQ-002",
+      "must": "An Admin can edit a team member's directory record",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-002-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 26598,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-002-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-33-44-237Z.json"
+    },
+    {
+      "id": "AC-002-c",
+      "requirementId": "REQ-002",
+      "must": "A Resource Manager can view the team member directory when assigning staff",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-002-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 27837,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-002-c.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-34-55-027Z.json"
+    },
+    {
+      "id": "AC-003-a",
+      "requirementId": "REQ-003",
+      "must": "An Account Manager can submit an allocation request specifying role, utilization %, and start/end dates",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-003-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 29378,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Request Test Co 1789389443512' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Request Test Co 1789389443512' })\n",
+        "location": "AC-003-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-37-02-625Z.json"
+    },
+    {
+      "id": "AC-003-b",
+      "requirementId": "REQ-003",
+      "must": "A submitted allocation request starts in Pending status",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-003-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28966,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Pending Status Co 1789389516729' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Pending Status Co 1789389516729' })\n",
+        "location": "AC-003-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-38-17-335Z.json"
+    },
+    {
+      "id": "AC-003-c",
+      "requirementId": "REQ-003",
+      "must": "An allocation request cannot be submitted against a Closed engagement",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-003-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 27293,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Closed Engagement Co 1789389706138' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Closed Engagement Co 1789389706138' })\n",
+        "location": "AC-003-c.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-41-27-114Z.json"
+    },
+    {
+      "id": "AC-004-a",
+      "requirementId": "REQ-004",
+      "must": "A Resource Manager can view a list of pending allocation requests",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-004-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 29938,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Engagement', { exact: true }).or(getByText('No allocation requests'))\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText('Engagement', { exact: true }).or(getByText('No allocation requests'))\n",
+        "location": "AC-004-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-36-11-921Z.json"
+    },
+    {
+      "id": "AC-004-b",
+      "requirementId": "REQ-004",
+      "must": "A Resource Manager can view the details of a single allocation request",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-004-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 27707,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-004-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-37-26-423Z.json"
+    },
+    {
+      "id": "AC-005-a",
+      "requirementId": "REQ-005",
+      "must": "A Resource Manager can assign a team member with role, utilization %, and date range to a request",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-005-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 27881,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-005-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-38-37-815Z.json"
+    },
+    {
+      "id": "AC-005-b",
+      "requirementId": "REQ-005",
+      "must": "Approving a request creates an allocation for the assigned team member",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-005-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28084,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-005-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-41-09-455Z.json"
+    },
+    {
+      "id": "AC-005-c",
+      "requirementId": "REQ-005",
+      "must": "An approved request's status changes to Approved",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-005-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28871,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-005-c.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-42-22-264Z.json"
+    },
+    {
+      "id": "AC-006-a",
+      "requirementId": "REQ-006",
+      "must": "A Resource Manager can reject a pending allocation request with a reason",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-006-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 24943,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-006-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-43-32-924Z.json"
+    },
+    {
+      "id": "AC-006-b",
+      "requirementId": "REQ-006",
+      "must": "A rejected request's status changes to Rejected and stores the reason",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-006-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28811,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-006-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-44-40-411Z.json"
+    },
+    {
+      "id": "AC-006-c",
+      "requirementId": "REQ-006",
+      "must": "The requesting Account Manager can see the rejection reason on the request",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-006-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 25742,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row').nth(1)\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('row').nth(1)\n",
+        "location": "AC-006-c.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-45-52-915Z.json"
+    },
+    {
+      "id": "AC-007-a",
+      "requirementId": "REQ-007",
+      "must": "A Resource Manager can view a list of all current and upcoming allocations across engagements",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-007-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 29319,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('table')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('table')\n",
+        "location": "AC-007-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-34-46-343Z.json"
+    },
+    {
+      "id": "AC-007-b",
+      "requirementId": "REQ-007",
+      "must": "The allocations list shows each allocation's team member, engagement, role, utilization %, and dates",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-007-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 29279,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('table')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('table')\n",
+        "location": "AC-007-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-36-04-153Z.json"
+    },
+    {
+      "id": "AC-008-a",
+      "requirementId": "REQ-008",
+      "must": "A Resource Manager can modify an allocation's role, utilization %, or date range",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-008-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28274,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('table')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('table')\n",
+        "location": "AC-008-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-37-19-836Z.json"
+    },
+    {
+      "id": "AC-008-b",
+      "requirementId": "REQ-008",
+      "must": "A Resource Manager can end an allocation before its original end date",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-008-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28814,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('table')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('table')\n",
+        "location": "AC-008-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-38-32-625Z.json"
+    },
+    {
+      "id": "AC-009-a",
+      "requirementId": "REQ-009",
+      "must": "A Team Member can view a list of their own current and upcoming allocations",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-009-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 30264,
+      "failure": {
+        "message": "Test timeout of 30000ms exceeded.",
+        "location": "AC-009-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-39-45-027Z.json"
+    },
+    {
+      "id": "AC-009-b",
+      "requirementId": "REQ-009",
+      "must": "Each allocation shown to the Team Member includes the engagement, role, and utilization %",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-009-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28268,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('table')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('table')\n",
+        "location": "AC-009-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-41-49-936Z.json"
+    },
+    {
+      "id": "AC-009-c",
+      "requirementId": "REQ-009",
+      "must": "A Team Member cannot view another team member's allocations",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-009-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 33607,
+      "failure": {
+        "message": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 403\nReceived: 504",
+        "location": "AC-009-c.spec.ts:6"
+      },
+      "batch": "2026-09-14T12-45-17-749Z.json"
+    },
+    {
+      "id": "AC-010-a",
+      "requirementId": "REQ-010",
+      "must": "An Admin can view a report showing utilization % across all team members",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-010-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 25981,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('table')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('table')\n",
+        "location": "AC-010-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-46-53-613Z.json"
+    },
+    {
+      "id": "AC-010-b",
+      "requirementId": "REQ-010",
+      "must": "The report reflects the sum of a team member's active allocation utilization %",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-010-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 31117,
+      "failure": {
+        "message": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 200\nReceived: 504",
+        "location": "AC-010-b.spec.ts:6"
+      },
+      "batch": "2026-09-14T12-48-05-656Z.json"
+    },
+    {
+      "id": "AC-011-a",
+      "requirementId": "REQ-011",
+      "must": "An Account Manager can add a role with a target headcount to an engagement's staffing plan",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-011-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 29279,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Staffing Plan Co 1789389780410' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Staffing Plan Co 1789389780410' })\n",
+        "location": "AC-011-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-42-39-505Z.json"
+    },
+    {
+      "id": "AC-011-b",
+      "requirementId": "REQ-011",
+      "must": "An Account Manager can revise an engagement's staffing plan at any time",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-011-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28551,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Revise Plan Co 1789389846715' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Revise Plan Co 1789389846715' })\n",
+        "location": "AC-011-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-43-48-168Z.json"
+    },
+    {
+      "id": "AC-011-c",
+      "requirementId": "REQ-011",
+      "must": "Defining a staffing plan does not itself create any allocation",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-011-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 27766,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'No Allocation Co 1789389915541' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'No Allocation Co 1789389915541' })\n",
+        "location": "AC-011-c.spec.ts:6"
+      },
+      "batch": "2026-09-14T12-44-56-773Z.json"
+    },
+    {
+      "id": "AC-012-a",
+      "requirementId": "REQ-012",
+      "must": "An Account Manager can close an Active engagement",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-012-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28493,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Close Engagement Co 1789389985851' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Close Engagement Co 1789389985851' })\n",
+        "location": "AC-012-a.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-46-07-408Z.json"
+    },
+    {
+      "id": "AC-012-b",
+      "requirementId": "REQ-012",
+      "must": "A Closed engagement remains visible and its existing allocations are unaffected",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-012-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 28429,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Closed Visibility Co 1789390055118' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Closed Visibility Co 1789390055118' })\n",
+        "location": "AC-012-b.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-47-16-842Z.json"
+    },
+    {
+      "id": "AC-012-c",
+      "requirementId": "REQ-012",
+      "must": "An Account Manager can reopen a Closed engagement to Active",
+      "method": "e2e",
+      "status": "fail",
+      "spec": "tests/e2e/specs/AC-012-c.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 25833,
+      "failure": {
+        "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Reopen Engagement Co 1789390119097' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Reopen Engagement Co 1789390119097' })\n",
+        "location": "AC-012-c.spec.ts:5"
+      },
+      "batch": "2026-09-14T12-48-22-450Z.json"
+    },
+    {
+      "id": "AC-013-a",
+      "requirementId": "REQ-013",
+      "must": "An unauthenticated user is redirected to sign in before reaching any role's screens",
+      "method": "e2e",
+      "status": "pass",
+      "spec": "tests/e2e/specs/AC-013-a.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 16652,
+      "failure": null,
+      "batch": "2026-09-14T12-23-30-522Z.json"
+    },
+    {
+      "id": "AC-013-b",
+      "requirementId": "REQ-013",
+      "must": "A signed-in user only sees the screens and actions permitted by their role",
+      "method": "e2e",
+      "status": "pass",
+      "spec": "tests/e2e/specs/AC-013-b.spec.ts",
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 60115,
+      "failure": null,
+      "batch": "2026-09-14T13-02-03-405Z.json"
+    },
+    {
+      "id": "AC-014-a",
+      "requirementId": "REQ-014",
+      "must": "Resource Managers are notified by email when a new allocation request is submitted",
+      "method": "manual",
+      "status": "manual",
+      "spec": null,
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 0,
+      "failure": null,
+      "batch": null
+    },
+    {
+      "id": "AC-014-b",
+      "requirementId": "REQ-014",
+      "must": "The requesting Account Manager and the affected Team Member are notified by email when a request is approved and assigned",
+      "method": "manual",
+      "status": "manual",
+      "spec": null,
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 0,
+      "failure": null,
+      "batch": null
+    },
+    {
+      "id": "AC-014-c",
+      "requirementId": "REQ-014",
+      "must": "The requesting Account Manager is notified by email when a request is rejected",
+      "method": "manual",
+      "status": "manual",
+      "spec": null,
+      "healed": false,
+      "healAttempts": 0,
+      "flaky": false,
+      "durationMs": 0,
+      "failure": null,
+      "batch": null
+    }
+  ]
+}
