@@ -1,0 +1,380 @@
+# Derived from the product's client code (backend/modules/entity/finance.bal, types.bal; backend/modules/types/types.bal) at d14b825.
+# Covers only the operations and fields the Allocations app uses. Not the service's published schema.
+
+type Query {
+  "Allocations of a set of consultants in a period, with their employee details."
+  allocations(filter: AllocationsByEmailFilter!): [AllocationWithEmployeeInfo!]!
+  engagements(filter: EngagementFilter!, includeFundingSources: Boolean!, includeEngagementConsultants: Boolean!, stringFilter: StringFilter!, order: EngagementTableOrder!, limit: Int!, offset: Int!): [Engagement!]!
+  "The same search shaped for the approval queue."
+  engagementsForApprovalProcess(filter: EngagementFilter!, includeFundingSources: Boolean!, includeEngagementConsultants: Boolean!, stringFilter: StringFilter!, order: EngagementTableOrder!, limit: Int!, offset: Int!): [Engagement!]!
+  engagement(id: String!, includeFundingSources: Boolean!): Engagement
+  engagementAllocations(filter: EngagementAllocationFilter!, stringFilter: StringFilter, includeFundingSources: Boolean!, order: AllocationTableOrder, limit: Int, offset: Int): [Allocation!]!
+  "A consultant's allocations over a date range, for the report."
+  consultantAllocations(filter: ConsultantAllocationFilter!, limit: Int!, offset: Int!, includeFundingSources: Boolean!): [ConsultantAllocation!]!
+  nonAllocatedEmployees(filter: NonAllocatedEmployeeFilter!, limit: Int!, offset: Int!): [Employee!]!
+  "Visa records for a consultant, country and date window."
+  visas(filter: VisaFilter!): [Visa!]!
+}
+
+type Mutation {
+  "Adds new allocations and updates overlapped ones in one call, with the allocation log and the acting user."
+  bulkUploadAllocations(input: BulkAllocationsInput!): BulkAllocationUploadResult!
+  addEngagement(input: InsertEngagementInput!): Engagement!
+  updateEngagement(input: UpdateEngagementInput!): Engagement!
+  updateAllocation(input: UpdateAllocationInput!): Allocation!
+  "Marks the allocation Deleted; nothing is destroyed."
+  setAllocationStatusDeleted(id: String!): String!
+}
+
+# ---- Inputs
+
+input AllocationsByEmailFilter {
+  emails: [String!]!
+  startDate: String!
+  endDate: String!
+  allocTypes: [Int!]
+}
+
+input EngagementFilter {
+  id: String
+  uuid: String
+  type: String
+  engagementType: Int
+  account: String
+  allocationType: String
+  engagementStatus: String
+  requestStatus: String
+  startDate: String
+  endDate: String
+  businessUnits: [String!]
+  engagementCodeSearchStrings: [String!]
+  engagementCodeExcludeStrings: [String!]
+}
+
+input StringFilter {
+  searchString: String!
+  searchColumns: [String!]!
+}
+
+input EngagementTableOrder {
+  columnName: String
+  sortOrder: String
+}
+
+input AllocationTableOrder {
+  columnName: String
+  sortOrder: String
+}
+
+input EngagementAllocationFilter {
+  allocationId: String
+  type: String
+  account: String
+  engagementId: String
+  allocationType: String
+  consultant: String
+  clearanceStatus: String
+  startDate: String
+  endDate: String
+  businessUnits: [String!]
+  statuses: [String!]
+}
+
+input ConsultantAllocationFilter {
+  email: String
+  startDate: String!
+  endDate: String!
+  businessUnit: String
+  department: String
+  team: String
+  allocTypes: [String!]
+}
+
+input NonAllocatedEmployeeFilter {
+  startDate: String!
+  endDate: String!
+  businessUnit: String
+  department: String
+  team: String
+}
+
+input VisaFilter {
+  email: String!
+  countryCode: String!
+  minStartDate: String!
+  minEndDate: String!
+}
+
+input FundingSourceInput {
+  businessUnit: String!
+  productUnit: String!
+  region: String!
+  subRegion: String!
+  percentage: Float!
+}
+
+input InsertEngagementInput {
+  allocationType: String!
+  customerName: String!
+  customerCode: String!
+  address: String!
+  technicalContact: String!
+  opportunitySize: String!
+  businessDomain: String!
+  additionalMaterial: String!
+  isContractsSigned: Boolean!
+  engagementCode: String!
+  startDate: String!
+  endDate: String!
+  status: String!
+  opportunityName: String!
+  opportunityId: String!
+  productId: String!
+  opportunityOwner: String!
+  productName: String!
+  engagementScope: String!
+  engagementStatus: String!
+  isTentativeDates: Boolean!
+  engagementNature: String!
+  customerContact: String!
+  technicalOwner: String!
+  comment: String!
+  country: String!
+  uuid: String!
+  description: String!
+  username: String!
+  fundingSources: [FundingSourceInput!]!
+}
+
+input UpdateEngagementInput {
+  id: String!
+  allocationType: Int
+  allocationTypeName: String
+  engagementCode: String
+  address: String
+  startDate: String
+  endDate: String
+  status: String
+  engagementStatus: String
+  updatedBy: String!
+  engagementScope: String
+  engagementNature: String
+  comment: String
+  country: String
+  customerContact: String
+  fundingSources: [FundingSourceInput!]
+}
+
+input UpdateAllocationInput {
+  id: String!
+  status: String
+  comment: String
+  clearanceStatus: String
+  username: String
+  allocationType: Int
+  engagementCode: String
+  startDate: String
+  endDate: String
+}
+
+input AllocationInput {
+  email: String!
+  allocationType: Int!
+  status: String!
+  allocationStatus: String
+  clearanceStatus: String
+  startDate: String!
+  endDate: String!
+  startTime: String
+  endTime: String
+  timeZone: String
+  engagementId: String!
+  engagementCode: String!
+  isTravelRequired: String!
+  isRecurring: String!
+  comment: String
+  countryCode: String
+}
+
+input UpdateOverlappedAllocation {
+  id: String!
+  startDate: String!
+  endDate: String!
+}
+
+input AllocationLogRecord {
+  email: String!
+  allocationType: Int!
+  startDate: String!
+  endDate: String!
+  engagementCode: String!
+}
+
+input BulkAllocationsInput {
+  newAllocations: [AllocationInput!]!
+  updateAllocations: [UpdateOverlappedAllocation!]
+  allocationLogs: [AllocationLogRecord!]
+  userEmail: String!
+}
+
+# ---- Types
+
+type Engagement {
+  type: Int!
+  id: String!
+  username: String!
+  customerName: String!
+  allocationType: Int!
+  allocationTypeName: String
+  opportunityName: String!
+  productName: String!
+  productId: String
+  engagementCode: String!
+  engagementNature: String!
+  country: String!
+  address: String
+  startDate: String!
+  endDate: String!
+  customerContact: String
+  businessDomain: String
+  opportunityOwner: String!
+  technicalOwner: String!
+  isContractsSigned: Boolean!
+  engagementScope: String
+  comment: String
+  engagementStatus: String!
+  requestStatus: String!
+  consultants: [EngagementConsultant!]
+  fundingSources: [FundingSource!]
+}
+
+type EngagementConsultant {
+  allocationId: String!
+  email: String!
+  allocationStartDate: String!
+  allocationEndDate: String!
+}
+
+type FundingSource {
+  businessUnit: String!
+  productUnit: String!
+  region: String!
+  subRegion: String!
+  percentage: Float!
+}
+
+type Allocation {
+  id: String!
+  email: String!
+  allocationType: Int!
+  allocationTypeName: String!
+  startDate: String!
+  endDate: String!
+  startTime: String
+  endTime: String
+  timeZone: String
+  isRecurring: String
+  comment: String
+  clearanceStatus: String
+  isTravelRequired: String
+  consultantRole: String
+  engagement: EngagementDetails
+}
+
+type EngagementDetails {
+  type: Int!
+  engagementTypeName: String!
+  engagementId: String!
+  customerName: String!
+  opportunityName: String!
+  productName: String!
+  productId: String
+  engagementCode: String!
+  engagementNature: String!
+  country: String!
+  address: String
+  customerContact: String
+  businessDomain: String
+  opportunityOwner: String!
+  technicalOwner: String!
+  isContractsSigned: Boolean!
+  engagementScope: String
+  engagementComment: String
+  engagementStatus: String
+  fundingSources: [FundingSource!]
+}
+
+type AllocationWithEmployeeInfo {
+  id: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  jobRole: String!
+  department: String!
+  team: String!
+  allocationType: Int!
+  allocationTypeName: String!
+  status: String!
+  startDate: String!
+  endDate: String!
+  isRecurring: String
+  startTime: String
+  endTime: String
+  timeZone: String
+  addedBy: String!
+  addedDate: String!
+  comment: String
+  engagementId: String
+  clearanceStatus: String
+  engagementCode: String!
+  consultantRole: String
+}
+
+type ConsultantAllocation {
+  id: String!
+  email: String!
+  allocationTypeName: String!
+  startDate: String!
+  endDate: String!
+  engagementId: String
+  isRecurring: String
+  startTime: String
+  endTime: String
+  timeZone: String
+  engagementCode: String
+  engagementNature: String
+  country: String
+  initialEngagementCode: String!
+  defaultEngagementCodeForAllocType: String!
+  engagementTypeName: String!
+  numOfDdays: Int!
+  department: String
+  team: String
+  businessUnit: String
+  location: String
+  company: String
+  fundingSources: [FundingSource!]
+}
+
+type Employee {
+  workEmail: String!
+  jobRole: String
+  businessUnit: String
+  department: String
+  team: String
+  company: String
+}
+
+type Visa {
+  startDate: String!
+  endDate: String!
+  visaType: String!
+  entryType: String!
+  status: String!
+  country: String!
+}
+
+type BulkAllocationUploadResult {
+  recordsAdded: Int!
+  recordsUpdated: Int!
+}

@@ -1,0 +1,99 @@
+# Derived from the product's client code (backend/modules/servicenow/servicenow.bal, types.bal) at d14b825.
+# Covers only the two operations the Allocations app calls. Not the provider's published document.
+openapi: 3.0.3
+info:
+  title: ServiceNow consultant skills API (as used by the Allocations app)
+  version: derived-d14b825
+security:
+  - bearer: []
+paths:
+  /find_consultants_by_skills/skills:
+    get:
+      operationId: listSkills
+      summary: The skill catalogue
+      responses:
+        "200":
+          description: Every skill, wrapped in result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillResponse"
+  /find_consultants_by_skills/consultants:
+    post:
+      operationId: searchConsultants
+      summary: Consultants who hold the given skills
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsultantSearchPayload"
+      responses:
+        "200":
+          description: Matching consultants, wrapped in result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsultantResponse"
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: A token from the OAuth2 client-credentials grant at the configured token address.
+  schemas:
+    Skill:
+      type: object
+      required: [sys_id, skill]
+      properties:
+        sys_id:
+          type: string
+          description: ServiceNow system id of the skill; opaque
+        skill:
+          type: string
+          description: Skill name
+    SkillResponse:
+      type: object
+      required: [result]
+      properties:
+        result:
+          type: array
+          items:
+            $ref: "#/components/schemas/Skill"
+    ConsultantSearchPayload:
+      type: object
+      required: [engagementID, skill_ids]
+      properties:
+        engagementID:
+          type: integer
+        skill_ids:
+          type: array
+          items:
+            type: string
+            description: Skill sys_id values from listSkills
+    Consultant:
+      type: object
+      required: [sys_id, name, email, skills]
+      properties:
+        sys_id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+    ConsultantResponse:
+      type: object
+      required: [result]
+      properties:
+        result:
+          type: object
+          required: [consultants]
+          properties:
+            consultants:
+              type: array
+              items:
+                $ref: "#/components/schemas/Consultant"

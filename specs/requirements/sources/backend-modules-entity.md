@@ -1,0 +1,70 @@
+# backend/modules/entity
+
+The GraphQL clients and queries for the finance, HR and sales entity services, their record types, and the finance service's own schema files beside the product.
+
+- clients.bal:10-13: configurable endpoints for the three entity services and one client-credentials set → not used: how it is built
+- clients.bal:19-50 (financeEntityGraphqlClient, hrEntityGraphqlClient, salesEntityGraphqlClient): engagements, allocations and visas come from the finance entity service; employees, org structure and reporting lines from the HR entity service; customers, opportunities and line items from the sales entity service → domain-model.md
+- clients.bal:19-50: no explicit timeout or retry on the three clients; one shared credential set → not used: how it is built
+- finance.bal:17-51 (getAllocationsByEmail): the allocations of a set of consultants in a period, optionally by allocation type, with their employee info, as the timelines and the overlap validation read them → F4.2, F5.1, F5.4
+- finance.bal:54-72 (bulkUploadAllocations): one mutation adds an array of allocations and updates another, with the allocation logs and the acting user, returning the counts; used by every allocation add and by the bulk upload → F4.2, F4.3, F5.2, F5.4
+- finance.bal:82-175 (getEngagementsByFilter): engagement search by filter, text, sort and page, optionally with funding sources and the consultants allocated → F1.4, F2.3, F1.8
+- finance.bal:156-161: an engagement lists one consultant line per allocation, with the allocation id, email and dates → domain-model.md, F1.8
+- finance.bal:186-279 (getEngagementsByFilterForApprovalProcess): the same search shaped for the approval queue → F3.1
+- finance.bal:287-332 (getEngagementByIdentifier): one engagement by id with its funding sources, read by the edit form, the allocation workspace, the bulk-upload privilege check and the new-allocation notification → F1.5, F2.4, F4.1
+- finance.bal:339-380 (addEngagement): creates an engagement; the customer falls back to the organization's own account when none is given → F1.1, F2.1, F2.2
+- finance.bal:387-428 (updateEngagement): updates an engagement's fields, engagement status and request status → F1.5, F1.6, F1.7, F2.4, F3.2
+- finance.bal:437-452 (getEngagementAllocations): allocation search by filter, text, sort and page, always asking for Active records only → F4.7, P5
+- finance.bal:468-532: each allocation comes with its parent engagement's type, names, code, nature, country, address, contacts, owners, scope and status → F4.1, F4.7
+- finance.bal:541-598 (getConsultantAllocations): a consultant's or everyone's allocations for a period with their cost codes, team placement and funding sources, read page by page until empty → F7.1
+- finance.bal:606-639 (getNonAllocatedEmployees): employees without an allocation in a period, by team triple, paged → F7
+- finance.bal:646-695 (updateAllocation): changes one allocation's status, clearance status, dates, type and comment and returns it with its engagement → F4.6, F4.7, F5.3
+- finance.bal:698-714 (deleteAllocation): deleting an allocation sets its record status to Deleted → F5.3, P5
+- finance.bal:719-729 (getEngagementConsultants): the emails of an engagement's consultants, with no caller → not used: dead path
+- finance.bal:732-751 (getTravelReadiness): a consultant's visas for a country and date window, read only to compose the confirmation notice → F4
+- hr.bal:17-49 (getEmployees): employees by employment status, excluded employment types and team triple, paged → F4.2, F5.4
+- hr.bal:56-70 (getEmployee): one employee's business unit, department, team, company and final day of employment → F4.2, F7.2
+- hr.bal:77-113 (getOrgData): the org structure, the countries and each level as a list, for given employee statuses → F4.2, F5.1
+- hr.bal:120-130 (getEmployeeReportsTo): an employee's reporting lead emails, nilable, read only to address notifications → F2, F4
+- sales.bal:14-47 (getCustomers): accounts by status, with id, name and sub region → F1.1, F1
+- sales.bal:32, 79, 126: each sales read pages until the result is empty → not used: how it is built
+- sales.bal:54-94 (getOpportunities): a customer's opportunities, optionally only active ones, with owner, pre-sale and post-sale codes, address, technical owner and won flag → F1.1
+- sales.bal:101-141 (getOpportunityLineItems): an opportunity's line items of the requested classifications, with auto code, tentative flag, service dates, product unit and business unit → F1.1
+- sales.bal:148-163 (getOpportunityLineItem): one line item's current service dates, to refresh an engagement's dates → F1.5
+- types.bal:15-19 (ClientAuthConfig): token endpoint and client credentials → not used: how it is built
+- types.bal:30-35 (EngagementConsultant): a consultant line under an engagement with allocation id, email and dates → domain-model.md, F1.8
+- types.bal:62-86 (AllocationsWithEmployeeInfo): an allocation joined with the consultant's names, job role, department and team, as a timeline row → F4.2, F5.1
+- types.bal:106-120 (EngagementFilter): engagement filters by id, kind, type, account, allocation type, both statuses, dates, business units and code prefixes → F1.4, F2.3, F3.1
+- types.bal:126-138 (StringFilter, TableOrder): search text and columns; sort column and order → P11
+- types.bal:156-173 (AllocationsByEmailFilter): consultant emails, period and optional allocation type ids → F4.2, F5.1
+- types.bal:189-201 (EngagementAllocationFilter): allocation filters by allocation, kind, account, engagement, allocation type, consultant, clearance status, dates, business units and record statuses → F4.7
+- types.bal:210-216 (NonAllocatedEmployeeFilter): period and team triple → F7
+- types.bal:225-231 (EmployeeFilter): employment statuses, excluded employment types and team triple → F4.2, F4
+- types.bal:268-299 (InsertEngagementInput): the finance-side new engagement, with the account name and code required and the creator's email added → F1.1, F2.1, P3
+- types.bal:320-337 (UpdateEngagementInput): the finance-side update, with the engagement id and the updater's email added → F1.5, F2.4, F3.3
+- types.bal:346-352 (FundingSource): a duplicate of the types module's funding source → domain-model.md
+- types.bal:365-375 (UpdateAllocationInput): the finance-side allocation update, with the allocation id and the acting user's email → F4.6
+- types.bal:383-388 (BulkAllocationsInput): the finance-side bulk write, with the acting user's email → F4.2, F5.4
+- types.bal:395-560, 601-682: GraphQL response envelopes per query and mutation → not used: how it is built
+- types.bal:568-571 (BulkAllocationUploadResult): records added and records updated → F5.4
+- types.bal:576-578 (CustomerFilter): the account statuses to read → F1
+- types.bal:584-596 (OpportunityFilter, OpportunityLineItemFilter): opportunities belong to a customer; line items belong to an opportunity and are read by classification → domain-model.md, F1.1
+- types.bal:623-627 (Customer): a sales account, customer or prospect, with its sub region, the sales pod named in notifications → domain-model.md, F1
+- types.bal:649-662 (Opportunity): an opportunity with its owner, pre-sale code, post-sale engagement code, customer address, technical owner and won flag → domain-model.md, F1.1
+- types.bal:653-654, 699-702: engagement codes originate in the CRM: the opportunity's pre-sale and post-sale codes and the line item's auto code; the line item also gives the service dates and the tentative flag → F1
+- types.bal:695-705 (OpportunityLineItem): the product of an engagement, with name, description, auto code, tentative flag, service dates, product unit and business unit → domain-model.md, F1.1
+- entity-service/modules/database/types.bal:282-331 (EmployeeAllocationData): allocation columns joined with the consultant's HR fields, including the reporting lead → domain-model.md
+- entity-service/modules/database/types.bal:334-400 (EngagementAllocationData): an allocation carrying its engagement's sales sub region, product unit, business unit, type and creator → domain-model.md
+- entity-service/modules/database/types.bal:843-884 (InsertTravelInput, CancelTravelInput): a travel request is tied to one allocation and carries its allocation status → not used: outside the product root
+- entity-service/modules/hr/types.bal:15-25 (Employee): the HR employee with id, names, work email, job role, company, department, business unit and manager email → domain-model.md
+- entity-service/modules/types/allocation.bal:10-49: the columns engagements and allocations can be searched and sorted on → P11
+- entity-service/modules/types/allocation.bal:51-62 (AllocationClearanceStatus): the same ten clearance statuses as the product's → F4.6
+- entity-service/modules/types/allocation.bal:91-124, 173-202: the allocation filter also takes allocation ids, recurring and hourly fields, and the engagement filter an account id, none sent by this product → not used: outside the product root
+- entity-service/modules/types/allocation.bal:238-288 (Allocation): the allocation column mapping, with record status and a nested engagement → domain-model.md
+- entity-service/modules/types/allocation.bal:439-549 (Engagement): the engagement column mapping, with the status column as the request status, plus funding sources and consultants → domain-model.md
+- entity-service/modules/types/allocation.bal:553-568 (EngagementConsultant): allocation id, email, dates and engagement id → domain-model.md
+- entity-service/modules/types/allocation.bal:572-582, 828-841 (FundingSource, FundingSourceResult): a funding share, and one with its engagement id → domain-model.md
+- entity-service/modules/types/allocation.bal:619-650 (AllocationInput): the schema names status the allocation status, allocationStatus the allocation request status and clearanceStatus the consultant clearance status; the request status's values are not visible from this product → F6 (open question 1)
+- entity-service/modules/types/allocation.bal:785-802: marketing event create and update inputs exist in the schema and this product does not call them → F2
+- entity-service/modules/types/allocation.bal:812-826 (Employee): the finance-side employee returned for non-allocated employees → domain-model.md
+- entity-service/modules/types/travel.bal:45-53, 260-388 (TravelStatus, Travel): a travel request keyed by job number with its allocation, traveller, engagement, destination, dates, visa, hotels, flights and a seven-value status, never read by this product → not used: outside the product root
+- entity-service/modules/types/travel.bal:445-476 (Visa, VisaFilter): a visa with its country, type, entry type, dates, status and documents, filtered by email, country and date window → domain-model.md

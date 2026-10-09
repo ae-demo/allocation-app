@@ -1,0 +1,39 @@
+{
+  "name": "finance-entity-service",
+  "resource": {
+    "ref": "finance-entity-service",
+    "name": "finance-entity-service",
+    "description": "The system of record for engagements, consultant allocations and visa records: every engagement and allocation the product shows is read from it and every change is written back to it.",
+    "provider": "the organization's finance entity service",
+    "config": [
+      {
+        "key": "FINANCE_ENTITY_SERVICE_CLIENT_ID",
+        "description": "Client id for the client-credentials grant"
+      },
+      {
+        "key": "FINANCE_ENTITY_SERVICE_CLIENT_SECRET",
+        "secret": true,
+        "description": "Client secret for the client-credentials grant"
+      },
+      {
+        "key": "FINANCE_ENTITY_SERVICE_TOKEN_URL",
+        "description": "Token address for the client-credentials grant"
+      },
+      {
+        "key": "FINANCE_ENTITY_SERVICE_URL",
+        "description": "Address of the service's GraphQL interface"
+      }
+    ],
+    "contract": {
+      "type": "graphql",
+      "path": "finance-entity-service.graphql",
+      "origin": "registry"
+    },
+    "consumptionInstructions": "Authenticate with OAuth2 client credentials against the token address and send the bearer token with every GraphQL request. Reads: `engagements` and `engagementsForApprovalProcess` search engagements by filter, free text over named columns, sort order and page, optionally with funding sources and the consultants allocated; `engagement(id)` reads one; `engagementAllocations` lists allocations by engagement, consultant, type, clearance status and dates; `allocations(filter)` lists a set of consultants' allocations in a period, with employee details, for timelines and overlap checks; `consultantAllocations` feeds the report; `nonAllocatedEmployees` lists staff without allocations in a period; `visas(filter)` returns visa records for a consultant, country and window. Writes: `addEngagement` and `updateEngagement` take the full engagement input including funding sources and return the engagement; `bulkUploadAllocations` adds new allocations and updates overlapped ones in one call with the allocation log and the acting user, returning the counts added and updated, and is the one path for every allocation add; `updateAllocation` changes status, clearance status, dates, type or comment; `setAllocationStatusDeleted(id)` marks an allocation Deleted and nothing is destroyed. Dates are ISO strings; engagement and allocation types are numeric ids with a name field beside them. Paged queries return an empty page when exhausted."
+  },
+  "provenance": {
+    "registry": "finance-entity-service/finance-entity-service.graphql",
+    "sha256": "3d655ee255d1b18f891aca5fb210cdd80d8bd491cda3326f115a8ad3426447a5",
+    "readOn": "2026-10-08T06:27:41Z"
+  }
+}

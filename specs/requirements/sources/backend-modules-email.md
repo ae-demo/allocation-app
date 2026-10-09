@@ -1,0 +1,42 @@
+# backend/modules/email
+
+- client.bal:16-23: `EmailServiceConfig` configurable, key names endpointUrl, tokenUrl, clientId, clientSecret → not used: how it is built
+- client.bal:29 (emailServiceEndPoint): the organization's email notifications service, a template-based SMTP relay reached over REST with OAuth2 client credentials → product-wide.md (Decisions, notifications)
+- client.bal:29-33: no explicit timeout or retry, library defaults → not used: how it is built
+- email.bal:18-30: configurable key names frontendAppBaseUrl, isEmailsEnabled, isSendTestingEmailsOnlyVal, allocationManagerEmail, allocationGroupEmail, legalTeamEmail, partnerAllocationGroupEmail, travelGroupEmail, allocationTestEmail, noEmailsTo, appUuid, approveMarketingEmail, approveInternalEmail → not used: how it is built
+- email.bal:32, 711-712: testing mode replaces To with the configured test address and drops CC, the original recipients are still logged → not used: how it is built
+- email.bal:39, 603: allocation notifications are logged as "Allocation: {clearanceStatus}" → not used: how it is built
+- email.bal:46: `isTravelRequired` on an allocation is "Yes" or "No" → F4.4
+- email.bal:48: addresses that must never be notified, resolved once from `noEmailsTo` → not used: how it is built
+- email.bal:51-58: four engagement lifecycle events raise a notification, Engagement Created, Updated, Approved and Cancelled, each recorded in the dispatch log so it can be traced to its action → F1, F2, F3
+- email.bal:67 (sendEmailForNewEngagement): sent when an engagement is created, an "Approval request" titled "Please approve" for internal engagements and marketing events, a "Consultant request" for customer engagements → F1, F2
+- email.bal:84-88, 119-123, 147-149, 177-181, 433-437, 542: template ids customerEngagement, internalEngagement, marketingEvent, their Cancelled and Allocation variants, and consultantConfirmed → not used: how it is built
+- email.bal:89-94: the new-engagement To is the acting user, plus the configured approver list for marketing events or for internal engagements → F2, product-wide.md (open question 2)
+- email.bal:105 (sendEmailForUpdateEngagement): sent when details change and the change is neither a cancellation nor an approval, titled "{kind} Updated" → F1, F2
+- email.bal:108: the update subject says "Approval request" while the request is Pending Approval, otherwise "Consultant request" → F1, F2
+- email.bal:135 (sendEmailForApprovedEngagement): sent when the status becomes Approved, titled Approved, or "Updated and Approved" when other fields changed in the same request, internal and marketing templates only → F3
+- email.bal:159-161: the cancelled allocations are read before the engagement update, which cancels them and overwrites their clearance status → F1
+- email.bal:163 (sendEmailForCancelEngagement): sent when the engagement status becomes Cancelled, every allocated consultant in To, the travel team copied only when a cancelled allocation needed travel and was Confirmed or Confirmed - Visa Pending → F1, F2
+- email.bal:183-185: "those consultants are notified directly, and the travel team is copied only when travel had actually been arranged" → F1
+- email.bal:216 (sendEmailForEngagement): one recipient rule shared by every engagement notification, the acting user always in To → F1, F2, F3
+- email.bal:222-234, 547-559: templates carry one business unit, product unit and sub region, the first funding source for engagement mails, the single one for allocation mails, "N/A" otherwise, a TODO in code → product-wide.md (Decisions, notifications show one funding source)
+- email.bal:236-260, 561-592: template content keys title, description, allocate\_now\_link, customer\_name through visa\_data, travel\_readiness\_comment, info\_title and project\_name\_label → not used: how it is built
+- email.bal:239: the "allocate now" link opens the approval queue when the title asks for approval, otherwise the engagement's allocations page → not used: how it is built
+- email.bal:265-268: the requester, who is not necessarily the person acting, is copied on every lifecycle notification of their engagement → P3
+- email.bal:270-280: "Notify to Allocations" No sends to the requester's own reporting line, "not every lead in the department"; Yes, or any customer engagement, sends to the allocations group → F8, F2
+- email.bal:273-275: the department-leads routing the settings page describes is not what the service does → product-wide.md (open question 1)
+- email.bal:283: legal team recipient commented out, the key is configured but never notified → not used: dead path
+- email.bal:285-290: the travel team is copied on approval when the engagement nature implies travel, because "no allocation exists yet at approval time" and the nature is the only travel signal → F3
+- email.bal:297, 599, 715: the sender is always the allocation manager address, `appUuid` identifies the app to the email service → product-wide.md (Decisions, notifications)
+- email.bal:313 (sendEmailForNewAllocation): sent after a bulk insert when the main allocation is not a default one and its clearance status is notifiable, or a partner allocation arrives Confirmed; the engagement is re-read by id → F4
+- email.bal:357 (sendEmailForUpdateAllocation): sent when an allocation update carries engagement details and a clearance status and the change is notifiable; a default allocation never notifies → F4
+- email.bal:404 (sendEmailForAllocation): subject "Re: \[Allocations\] Consultant request for ..."; To is the partner allocations group for a partner consultant, otherwise the allocations group, the consultant and their reporting lead(s), plus the acting user → F4, F9
+- email.bal:439-543: one notice per clearance change, "Allocation Added" (Clearance In Progress, asking the consultant to confirm with their lead), "Allocation Declined" (Rejected by Consultant, Rejected - Other), "Allocation Cancelled" (Allocation Cancelled, and Rejected - Visa Issues with a visa note), "Allocation Accepted", "Allocation Confirmed" (Confirmed, Confirmed - Visa Pending) → F4
+- email.bal:450-505: the travel team is added on confirmation when travel is required, and on decline, cancellation or visa rejection when the previous status was Confirmed or Confirmed - Visa Pending with travel required → F4
+- email.bal:515-542: a confirmation for a staff consultant lists the visas valid for the allocation country and dates, flags one expiring within a week of the allocation end, and says whether a visa is available → F4
+- email.bal:608-632: recipient normalisation, suppressed and empty addresses dropped, duplicates removed, CC already in To dropped → not used: how it is built
+- email.bal:636-660 (getReportsToEmails): a missing or unresolvable reporting lead no longer aborts the notification; the other recipients are notified and the gap is logged → not used: how it is built
+- email.bal:662-673 (isAllocationMailInitiated): a clearance change notifies on Clearance In Progress, Accepted by Consultant, Rejected by Consultant, Rejected - Other, Rejected - Visa Issues and Confirmed - Visa Pending, on Allocation Cancelled unless from Ready for Clearance, on Confirmed unless from Confirmed - Visa Pending, never on Tentative or Ready for Clearance → F4
+- email.bal:677-701 (sendEmailNotification): the single dispatcher behind every notification; recipients are logged in every outcome, nothing is sent when emails are disabled by config or when To resolves empty → not used: how it is built
+- email.bal:707-709: every template receives the app name, the internal apps team's closing signature and the current year → P4
+- email.bal:726: the only call on the email client, posting the final record (app id, to, cc, from, subject, template id, content pairs) to the send-smtp-email resource → not used: how it is built

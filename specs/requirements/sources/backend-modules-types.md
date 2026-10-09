@@ -1,0 +1,54 @@
+# backend/modules/types
+
+The product's own record types: the entities, inputs, filters and views the service exchanges with the webapp and the databases.
+
+- types.bal:16-19, 25-28 (JwtRecord, JwtPayload): a signed-in user is the email and directory groups carried in the token, read as roles; a duplicate JWTRecord in backend/modules/database/types.bal:213-216 has no caller → P1, F10
+- types.bal:34-37 (EmployeeJobBandData): a colour per job role, for the timeline → F4
+- types.bal:45-50 (EngagementType): an engagement type with its name, its kind Customer or Internal, and whether it is active → domain-model.md, F8
+- types.bal:56-68 (Role, Privilege): an app role named after a directory group; a privilege with its id and name → domain-model.md, F10
+- types.bal:86-88: field docs: the contracts-signed flag means the legal contracts of the engagement are signed; the scope may be a reference to a document → F1.3, F4.8
+- types.bal:96-122 (Engagement): a customer engagement, internal engagement or marketing event with its type, creator, account, opportunity and product names, code, nature, country, address, dates, contacts, owners, scope, comment, both statuses and funding sources → F1, F2, domain-model.md
+- types.bal:128-131 (EngagementAccount): the account name and code pairs that have engagements, for the account filter → F1.4
+- types.bal:136-138 (EngagementProduct): the product ids that already have an engagement → F1
+- types.bal:143-145 (EngagementBusinessUnit): a business unit projection with no caller → not used: dead path
+- types.bal:150-152 (EventData): a marketing event name already taken → F2
+- types.bal:162-169 (DefaultAllocationDataForTeam): a team's default allocation type with its engagement type and default code → domain-model.md, F5, F7
+- types.bal:177-182 (EngagementCodeData): an engagement code's group, account name and GL code → domain-model.md, F7.2
+- types.bal:196-207 (AllocationType): an allocation type with its name, status, colour, department, notify-allocations flag, default code and suffix, under an engagement type → domain-model.md, F8.1
+- types.bal:220-229 (PartnerDataRecord): a partner consultant with names, reference-only personal email, phone, country, partner company and status → domain-model.md, F9.1
+- types.bal:235-238 (ExecutionSuccessResult): affected rows and last insert id of a write → not used: how it is built
+- types.bal:243-271 (BusinessUnitString, EngagementCodeString, SearchColumnString): single-line constrained strings for the search filters → P11
+- types.bal:292-399 (AllocationInput): one new allocation with its consultant email in the company format, type, record and request statuses, clearance status, ISO dates, hourly times and time zone, engagement id and code, travel and recurring flags, comment and country → F4.4, F5.2, P10
+- types.bal:407-429 (UpdateOverlappedAllocation): shrink an existing default allocation to new dates when a new one overlaps it → F4
+- types.bal:439-480 (AllocationLogRecord, BulkAllocationsInput): the new allocations, the updated allocations and one log line per allocation sent in a bulk write → F4.4, F5.4
+- types.bal:493-551 (UpdateAllocationInput): an allocation's status, comment, clearance status, type, code and dates to change; the previous clearance status and country are carried only to compose the notification → F4.6, F4.7, F5.3
+- types.bal:585-772 (InsertEngagementInput): a new engagement's fields, including the request status, the contracts-signed and tentative-dates flags and a required funding source list; text fields are single-line or free text, dates ISO → F1.1, F2.1, F2.2
+- types.bal:599-606, 677-705: an engagement references its account by name and code, its opportunity by name, id and owner, and its product by id and name → domain-model.md
+- types.bal:720: the tentative-dates flag applies to customer engagement types only → F1 (open question 1)
+- types.bal:778-787 (FundingSource): one share of who funds an engagement, by business unit, product unit, region and sub region with a decimal percentage; no sum or range check on the server → domain-model.md, F1, F2.2
+- types.bal:794-841 (BusinessUnit, ProductUnit, Region, SubRegion): the funding lookups, each with an active flag; a product unit under a business unit with customer, marketing and internal flags; a sub region under a region → domain-model.md, F1, F2
+- types.bal:846-854 (RoleRecord): a new role's name, any printable text → F10.2
+- types.bal:856-873 (PrivilegeString, RolePrivilegeRecord): the list of privilege ids to give a role; an id is not checked against the privileges table → F10.1
+- types.bal:884-934 (PartnerRecord): a partner consultant to add, names in the name format, optional email and phone in their formats, country, partner and status → F9.2, F9
+- types.bal:946-990 (AllocationTypeRecord): an allocation type to add, with name, engagement type id, optional colour, department, notify flag and suffix, and a required default engagement code → F8.2, F8
+- types.bal:997-1012 (AllocationCountByEngagementType, AllocationCountByAllocationType): a count per engagement type, and per allocation type with its colour → F6.1
+- types.bal:1023-1031 (ConsultantAllocationFilter): the report's period, optional consultant, team triple and allocation types → F7.1
+- types.bal:1058-1082 (ConsultantAllocation): one report row: allocation, consultant, engagement code and nature, country, initial and default codes, engagement type, day count, team placement, location, company and funding sources → F7.2
+- types.bal:1101-1188 (UpdateEngagementInput): an engagement's editable fields, both statuses and funding sources → F1.5, F1.7, F2.4, F3.3
+- types.bal:1200-1209 (Employee): a staff member by work email with names, job role, team, department, business unit and company → domain-model.md, F4.2
+- types.bal:1218-1224 (EmployeeRecord): one employee's org placement and final day of employment → domain-model.md, F4.2, F7.2
+- types.bal:1229-1232 (EmployeeReportsToData): an employee's reporting lead emails, comma separated; HR may hold none → domain-model.md, F2, F4
+- types.bal:1240-1260 (OrgDataResponse, OrgItem): the org tree of business units, departments and teams, its depth, the countries, and each level as a flat list → domain-model.md, F4.2, F5.1
+- types.bal:1265-1284 (AllocationAppServerError, AllocationAppBadRequest, AllocationAppError): error wrappers → not used: how it is built
+- types.bal:1289-1291 (AllocationConsultant): the email projection of an unused consultants query → not used: dead path
+- types.bal:1304-1333 (EmailRecord, EmailFinalRecord): the notification envelope sent to the email service → not used: how it is built
+- types.bal:1341-1363 (VisaFilter, VisaRecord): a consultant's visas for a country and date window, each with type, entry type, dates and status → domain-model.md, F4
+- types.bal:1394-1422 (EngagementAllocation): an allocation merged with its engagement's details, built only to render allocation notifications → F4
+- types.bal:1429-1433 (AllocationTypeDataRecord): an allocation type's name, department and notify-allocations flag, for routing notifications → F8, F2
+- types.bal:1438, 1455: an allocation names its consultant by email → domain-model.md, P10
+- types.bal:1443-1446: the recurring flag is Yes or No; an hourly allocation carries start time, end time and time zone → F4.4
+- types.bal:1448, 1464: the clearance status enum is stored as the allocation's clearanceStatus → F4.6
+- types.bal:1452-1468 (Allocation): one consultant's booking with its type, dates, hourly fields, comment, clearance status, travel flag, consultant role and parent engagement → domain-model.md, F4, F5
+- types.bal:1494-1515 (EngagementDetails): the parent engagement of an allocation, with its type, names, code, nature, country, address, contacts, owners, scope, comment, status and funding sources → domain-model.md, F4
+- types.bal:1536-1614 (EngagementSearchInput): engagement list filters by kind, type, account, allocation type, both statuses, dates, business units and code prefixes, plus paging, search and sort plumbing → F1.4, F2.3, F3.1, P11
+- types.bal:1634-1758 (AllocationSearchInput, AllocationSearchByEngagementInput): allocation list filters by allocation, engagement, kind, account, allocation type, consultant, clearance status, dates and business units, plus paging, search and sort plumbing → F4.7, P11

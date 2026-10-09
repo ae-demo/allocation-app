@@ -1,0 +1,43 @@
+{
+  "name": "email-notifications-service",
+  "resource": {
+    "ref": "email-notifications-service",
+    "name": "email-notifications-service",
+    "description": "Sends templated notification email on the product's behalf: an engagement raised, updated, approved or cancelled, and an allocation's clearance notices.",
+    "provider": "the organization's email notifications service, a template-based relay in front of the mail system",
+    "config": [
+      {
+        "key": "EMAIL_NOTIFICATIONS_SERVICE_APP_ID",
+        "description": "The identifier the service knows the calling app by, sent in every request"
+      },
+      {
+        "key": "EMAIL_NOTIFICATIONS_SERVICE_CLIENT_ID",
+        "description": "Client id for the client-credentials grant"
+      },
+      {
+        "key": "EMAIL_NOTIFICATIONS_SERVICE_CLIENT_SECRET",
+        "secret": true,
+        "description": "Client secret for the client-credentials grant"
+      },
+      {
+        "key": "EMAIL_NOTIFICATIONS_SERVICE_TOKEN_URL",
+        "description": "Token address for the client-credentials grant"
+      },
+      {
+        "key": "EMAIL_NOTIFICATIONS_SERVICE_URL",
+        "description": "Base address of the service"
+      }
+    ],
+    "contract": {
+      "type": "openapi",
+      "path": "email-notifications-service.openapi.yaml",
+      "origin": "registry"
+    },
+    "consumptionInstructions": "Authenticate with OAuth2 client credentials against the token address and send the bearer token. One operation: `POST /send-smtp-email` with `{ appUuid, to: [<address>], cc: [<address>], frm, subject, templateId, contentKeyValPairs: { <placeholder>: <text> } }`. The service rejects an empty `to` list, so resolve recipients first and skip the send when none remain. Templates live on the service side and are addressed by id; the ids the product uses are agreed with the service's owners (the current app uses one per notice kind, such as a customer engagement, an internal engagement and a marketing event). The product reads nothing from the response. The service fronts the organization's mail system; callers never send mail directly."
+  },
+  "provenance": {
+    "registry": "email-notifications-service/email-notifications-service.openapi.yaml",
+    "sha256": "bbd43890b839cd21c8e68022543fee391976028766f01d89a60aaf612c9f82b4",
+    "readOn": "2026-10-08T06:27:39Z"
+  }
+}

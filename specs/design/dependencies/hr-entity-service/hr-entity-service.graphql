@@ -1,0 +1,45 @@
+# Derived from the product's client code (backend/modules/entity/hr.bal, types.bal; backend/modules/types/types.bal) at d14b825.
+# Covers only the operations and fields the Allocations app uses. Not the service's published schema.
+
+type Query {
+  employees(filter: EmployeeFilter!, limit: Int!, offset: Int!): [Employee!]!
+  employee(email: String!): Employee
+  orgData(employeeStatuses: [String!]): OrgData!
+}
+
+input EmployeeFilter {
+  employeeStatus: [String!]
+  excludedEmploymentTypes: [String!]
+  businessUnit: String
+  department: String
+  team: String
+}
+
+type Employee {
+  workEmail: String!
+  firstName: String
+  lastName: String
+  jobRole: String
+  team: String
+  businessUnit: String
+  department: String
+  company: String
+  finalDayOfEmployment: String
+  "Null when the employee has no reporting lead recorded."
+  reportsToEmail: String
+}
+
+type OrgData {
+  orgLevelCount: Int!
+  countries: [String!]!
+  orgStructure: [OrgItem!]!
+  flatList: [[String!]!]!
+}
+
+type OrgItem {
+  name: String!
+  level: Int!
+  type: String!
+  typeName: String!
+  children: [OrgItem!]!
+}

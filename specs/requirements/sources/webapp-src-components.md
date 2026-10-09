@@ -1,0 +1,117 @@
+# webapp/src/components
+
+- allocations/AddNewAllocationPopup.js:121, 549-570: allocation form: email, type, engagement code, dates, hourly with time zone and recurring times, clearance status, comment, a mandatory travel-required choice, tentative flag, preparation and post-engagement overheads for paid engagements → F4.4, F4.5
+- allocations/AddNewAllocationPopup.js:131-145, 340-390: field-level errors; dates read-only when editing an engagement allocation or a default allocation older than 30 days → F4.4, F5
+- allocations/AddNewAllocationPopup.js:146-156: an allocation type with a default engagement code fixes the code, otherwise it is typed → F4
+- allocations/AllocationRecordsTable.js:53: the engagement's allocation records with an editable comment and a status edit icon → F4.1, F4.7
+- allocations/AllocationRecordsTable.js:96: status edit icon gated on the internal status-update privilege or allocate-allowed for the customer type → F4.6, F10
+- allocations/Allocations.js:12: allocation workspace page: loads the engagement, computes the allowed windows with zero relax and 14-day overhead, renders the workspace with data panel, records table, partner tab, travel field and request-status action → F4.1
+- allocations/AllocationsBy.js:84-89, 1296-1304: Allocation Cancelled and the three rejections are terminal; moving to one sets the record Inactive; terminal allocations are ignored in availability checks → F4
+- allocations/AllocationsBy.js:161: shared workspace for the engagement page, the team page and the post-create modal: search by email, by team, bulk upload, allocate partners; add and update dialogs, overlap and reload prompts, bulk create, status and comment edits, delete of defaults only, request-status header action → F4.1, F5.1, F4.9
+- allocations/AllocationsBy.js:355-409: allowed clearance transitions per current status → F4.6, F4
+- allocations/AllocationsBy.js:807-810, 837-859, 1277-1286: only default allocations are edited or removed from the team timeline, and only within 30 days of their start; engagement allocations are sent to the engagements section → F5.3, F5, F4, F4 (open question 3)
+- allocations/AllocationsBy.js:875-885, 898-900, 1081-1101: new allocations default to travel not required and record and allocation status Active → F4.4, F6 (open question 1)
+- allocations/AllocationsBy.js:939-952: a default allocation overlaps when it is neither entirely before nor entirely after the new one → F4, F5
+- allocations/AllocationsBy.js:955-1050: overlap resolution: refused when the new allocation swallows a default whole; otherwise the default is cut, split or shifted around it → F4
+- allocations/AllocationsBy.js:1073-1079: the tentative flag forces Tentative; with nothing set the fallback is Confirmed → F4, F4.4
+- allocations/AllocationsBy.js:1404-1409, 1952-1963: internal engagement allocations start at the chosen status among Tentative, Clearance In Progress, Confirmed and Confirmed - Visa Pending; partner allocations start Confirmed; customer allocations Ready for Clearance → F4
+- allocations/AllocationsBy.js:1440-1447, 1697-1740, 1981-2038: overheads only for paid types, availability-checked separately, created as default allocations of type Engagement Overhead coded with the engagement code plus the type's suffix, before the start and after the end → F4.5, F4
+- allocations/AllocationsBy.js:1741-1790: team page: a server-side check for the same person and period must return nothing, otherwise the user is asked to reload the timeline and the submit is blocked → F5
+- allocations/AllocationsBy.js:2091-2096: allocating moves the request to In Progress when it is not already → F4, F1
+- allocations/AllocationsBy.js:2127-2170, 2185-2259: no allocation when both engagement dates are more than five years past; the person must be free of non-default allocations for the engagement period before the popup opens; a live engagement allocation blocks when it covers or overlaps the period; two hourly allocations may share a day when their UTC windows do not overlap; hourly validation happens only at submission → F4
+- allocations/AllocationsBy.js:2207: default-type membership cannot identify a default allocation, since engagement allocations share those types → not used: how it is built
+- allocations/AllocationsBy.js:2310-2337: required allocation fields; the comment is checked for markup-like input → F4.4, P8
+- allocations/AllocationsBy.js:2347-2420: allocation date rules: valid dates, 30-day limit on the team page, five-year limit on the engagement page, dates within the allowed range, end after start, end time after start time, overheads outside the allocation → F4.4, F4, P7, F5
+- allocations/AllocationsBy.js:2440-2486: header action sets the request Completed or back to In Progress after confirmation → F4.9
+- allocations/AllocationsByMail.js:86: employee search, Allocate (disabled for past engagements), Find Consultant, timeline below → F4.2, F4.8
+- allocations/AllocationsByPartner.js:75-93: partner search over active partners only, partner timeline → F4.3, F9
+- allocations/AllocationsByTeam.js:91: business unit / department / team selection, optional allocation types, search loads the team's people and their allocations → F5.1, F4.2
+- allocations/AllocationsByTeam.js:124: temporary org-structure type mapping → not used: how it is built
+- allocations/AllocationsHeaderAction.js:8-18: "Update Request Status to Completed" icon, enabled with the request-status privilege → F4.9, F10
+- allocations/AllocationsModalPopup.js:52: "Internal Allocations" modal embedding the workspace for the engagement just created → F2 (open question 1)
+- allocations/AllocationsTimeline.js:64: timeline of people and allocations with today and engagement markers, double-click to add or edit, remove icon on removable items → F5.2, F4.1
+- allocations/AllocationsTimelineExtended.js:92: date range pickers, refresh, optional time zone → F5.1, F4.1
+- allocations/ConsultantSearchDialog.js:99-107, 153-164, 222-229, 260-287: skills fetched on open and recommendations requested automatically; suggested-skill chips added or removed; search returns consultants to select → F4.8
+- allocations/ConsultantSearchDialog.js:124: a fixed placeholder engagement id is sent on every search, by its own comment a temporary fix → F4 (open question 1)
+- allocations/ConsultantSearchDialog.js:166-189: skills sorted by name on the client → not used: how it is built
+- allocations/ConsultantSearchDialog.js:195-253: prompt built from the engagement scope and the skills register asks for the top five; no call when the scope is empty; chips mapped back to register ids by name, unmatched ones dropped → F4, F4.8, F4 (open question 4)
+- approveEngagements/ApproveAction.js:14: approve page: the form titled Approve Engagement/Event with "Confirm and Approve" → F3.2
+- approveEngagements/ApproveEngagements.js:71-181: Internal Engagements and Marketing Events tabs, each shown with its own view, edit or approve privileges → F3.1, F3, F10
+- approveEngagements/ApproveEngagementView.js:48, ApproveTable.js:46: text search, business unit filter, approval table over the last two years with a Pending Approval request chip and engagement status → F3.1
+- approveEngagements/ApproveTable.js:69-99, 224-238: Edit and View and Approve actions gated on the per-kind edit and approve privileges → F3.3, F3.2, F3, F10
+- approveEngagements/ApproveTable.js:181, 211: the queue lists Pending Approval requests, whose engagement status is Pending → F3
+- approveEngagements/BusinessUnitFilter.js:50, GlobalSearch.js:12: business unit checkboxes with clear; search text field → F3.1
+- approveEngagements/EditAction.js:16, 52-77: edit page on the approval process with dates, sub region, product unit, business unit, country and allocation type editable; the button is Confirm and Approve with an approve privilege, else Update → F3.3, F10
+- dashboard/Dashboard.js:111: business unit select, Today or Past Date (yesterday at the latest), three pie charts with count tables → F6.1, F6.2, F6
+- engagementAllocations/AllocationFilterBySearch.js:47, AllocationsTable.js:66: filters by account, allocation type, consultant, allocation status and dates; list columns with an editable comment and status chips → F4.7
+- engagementAllocations/AllocationsTable.js:75-105: Edit and Allocate Consultant shown only to users allowed to allocate that engagement type → F4.7, F4, F10
+- engagementAllocations/AllocationsTable.js:223: status chip variant chosen by privilege → not used: how it is built
+- engagementAllocations/EngagementAllocations.js:50, 239-291: allocations tab: filters, business unit checkboxes, server-paged list over two months back to two ahead; status update popup offering the allowed transitions, cancelled and rejected set Inactive; inline comment edit → F4.7, F4.6, F4, P11
+- engagements/EngagementDataPanel.js:29, EngagementDataPanelItem.js:29: read-only engagement header on the allocation page → F4.1
+- engagements/EngagementEdit.js:7: edit page with account, dates, tentative flag, domain, contracts, description, country and allocation type disabled; an event id returns to the events tab → F1.5, F2.4
+- engagements/EngagementFilterBySearch.js:53: filters by type, account, allocation type, engagement status, dates and request status → F1.4, F2.3
+- engagements/EngagementForm.js:140-310: per-type field policy: paid types copy and lock the CRM fields, non-paid types let the requester edit them, internal types fix the account and carry multiple funding sources → F1, F2, F2.1, F2.2
+- engagements/EngagementForm.js:324: the create, edit and approve form with its fields, confirmations, submit statuses and the post-create allocate prompt → F1.1, F1.3, F2.1, F2.2
+- engagements/EngagementForm.js:340-346: default of one funding source at 100 percent → F1, F2
+- engagements/EngagementForm.js:560-582: Internal Engagement offered with the internal create privilege, Marketing Event with the event create privilege → F2.1, F2.2, F10
+- engagements/EngagementForm.js:947-954, 993, 1007: Fetch New Dates for paid engagements in edit mode; messages treat the CRM as the source of truth for dates → F1.5
+- engagements/EngagementForm.js:1290-1302, 1372, 1497-1510: an internal type sets the internal account and, for Internal Engagement, nature Off-site; internal and event code is the allocation type's default code plus its suffix → F2
+- engagements/EngagementForm.js:1405-1440, 1520-1541, 1579: a customer account sets the first funding source's region and sub region; paid types copy code, dates, units, contracts-signed, address, owners and tentative flag from the CRM product, and the business unit is editable when the CRM has none → F1
+- engagements/EngagementForm.js:1483-1487, 1660-1690: Non-Paid Pre Sale code is the opportunity's pre-sale code; Non-Paid Post Sale code is the post-sale prefix plus the allocation type suffix, cleared when the type has none → F1
+- engagements/EngagementForm.js:1710-1763: valid dates and the required fields per engagement type → F1, F2
+- engagements/EngagementForm.js:1766-1790: markup-like input refused in address, scope, comment, opportunity, contact and description → P8
+- engagements/EngagementForm.js:1792-1803: event name must not already exist, but the check can never match → F2, F2 (open question 2)
+- engagements/EngagementForm.js:1805-1848: marketing event funding percentages non-zero, sum to 100, no duplicate combination → F2
+- engagements/EngagementForm.js:1850-1890: new dates not older than 30 days (internal) or five years (customer); on edit only a changed date is checked → P7, F1, F2
+- engagements/EngagementForm.js:1893-1914: start on or before end; a Paid engagement refused for a product that already has a request → F1
+- engagements/EngagementForm.js:1916-1935: tentative-date refusal compares a numeric type to strings and never fires → F1 (open question 1)
+- engagements/EngagementForm.js:1938, 2356-2370: the allocate-now handler opens the modal with popup dates bounded by the engagement dates → F2 (open question 1)
+- engagements/EngagementForm.js:1949-1958: the approve confirmation is shown only in the approval flow to approvers; the privilege test ORs two ids into one, so only the internal approve id is tested → F3, F10
+- engagements/EngagementForm.js:2012-2030, 2157-2165: return navigation after cancel or submit carrying a tab index → not used: how it is built
+- engagements/EngagementForm.js:2079-2204: submit as New, or Pending Approval through the approval flow, with engagement status Pending; edit sets Updated, or Pending Approval inside the approval flow → F1, F2
+- engagements/EngagementForm.js:2240-2290: approve sends Approved plus only the fields that changed → F3.2, F3
+- engagements/EngagementForm.js:2432: business and product unit validated within the funding sources → not used: how it is built
+- engagements/EngagementForm.js:2919-2926: "Go to salesforce page" link when a line item is loaded → F1.9
+- engagements/EngagementNew.js:71-134: page tabs Create, Engagements and Allocations, each per privilege; Create renders the form for customer or internal → F1.1, F1.4, F2.1, F4.7, F10
+- engagements/Engagements.js:48-116: engagement list tab: filters, business unit and type checkboxes (internal grouped by code prefix), server-paged list from two years back; request and engagement status confirmations → F1.4, F2.3, F1, P11
+- engagements/Engagements.js:273-298: setting engagement status Cancelled also sends request status Cancelled → F1.7
+- engagements/EngagementsTable.js:63: list columns with actions, consultants, a request status chip and an engagement status select → F1.4, F1.8
+- engagements/EngagementsTable.js:82-92: action column shown with an edit, request-status or allocate privilege → F1, F2, F10
+- engagements/EngagementsTable.js:136-153: Edit Engagement with the edit privilege → F1.5, F2.4, F10
+- engagements/EngagementsTable.js:155-168: Allocate Consultant with the internal allocate privilege or allocate-allowed for the customer type → F4.1, F4, F10
+- engagements/EngagementsTable.js:170-200: Complete and Reopen with the request-status privilege → F1.6, F2.5, F10
+- engagements/EngagementsTable.js:275-290: Consultants column with the consultants-column privilege → F1.8, F10
+- engagements/EngagementsTable.js:333-340: engagement status editable with the status privilege or by the engagement's own creator → F1, F10
+- engagements/EngagementsTable.js:453-478: request status change confirmed only for Completed and In Progress → F1.6
+- engagements/EngagementsTable.js:480-487: all five engagement statuses offered freely, no transition rule → F1, F1 (open question 2)
+- engagements/FundingSource.js:19, FundingSourcePanelItem.js:30: funding source rows: region, sub region, business unit, product unit, percentage, add and remove → F2.1, F2.2
+- engagements/FundingSourcePanelItem.js:122: product units filtered to the engagement category and the chosen business unit → F2
+- engagements/FundingSourcePanelItem.js:152-162: the only funding source cannot be removed; add is offered on the last row → F2.1, F1
+- reports/ConsultantAllocations.js:49: report filters by email, dates and allocation types; merges allocations, employee, non-allocated engineers, code data and team defaults → F7.1
+- reports/ConsultantAllocations.js:170, 189-201: engagement business unit and sales pod shown only with one funding source; a missing code falls back to the type's default; LEAVE is reported as the team default → F7
+- reports/ConsultantAllocations.js:240-260: derived calendar days, working days, daily or hourly and hours; LEFT rows skipped; remaining days filled with the team default → F7.2, F7
+- reports/ConsultantAllocations.js:292-294, 455-457, 529: no allocations in the period reports the whole period on the team default unless types were a criterion; code match exact, else a hyphen in sixth position and matching seventh and eighth characters; people without a unit, department or team are checked for a default → F7
+- reports/ConsultantAllocationsTable.js:19: report columns and Download CSV → F7.2, F7.3
+- reports/Reports.js:67-129: report page with one tab gated on the report privilege → F7.1, F10
+- settings/AddAllocationType.js:98: allocation type form: engagement type, name, default code, suffix, department, notify to allocations → F8.2
+- settings/AddAllocationType.js:194, 301-306: inactive engagement types not selectable; Notify to Allocations Yes copies the allocations group, No the requester's lead → F8
+- settings/AddPartnerPopup.js:93: partner form: country, partner, names, email, phone, status → F9.2
+- settings/AddPartnerPopup.js:151-216, 279-280: country, partner and names required; status Active or Left → F9.2, F9
+- settings/AllocationTypesSettings.js:28, 147: active allocation types table with edit, delete and add → F8.1, F8.3
+- settings/AllocationTypesSettings.js:332-350: engagement type, name and default code required → F8
+- settings/PartnerResourceMgt.js:28: partner consultants table with edit, delete and add → F9.1, F9.3
+- settings/PartnerResourceMgt.js:194-208: delete refused while allocations exist; the message names confirmed or rejected ones but every allocation counts → F9, F9 (open question 2)
+- settings/RoleSettings.js:59: role picker with privilege checkboxes, save, reset and info; no control to delete or rename a role, define a privilege or see who holds a role → F10.1, F10.2, F10, prd.md (Out of Scope)
+- settings/RoleSettings.js:91-149, 191-236, 260-269: roles, privileges and the role's privileges loaded; toggles stay local until Save, which confirms and patches; Reset reloads → F10.1
+- settings/RoleSettings.js:151-189, 238-258, 321-360: typing an unknown name offers to add it as a role after confirmation → F10.2
+- settings/RoleSettings.js:271-301: info icon opens the page information dialog → F10
+- settings/Settings.js:72-236: Role Settings, Partner Resources Management and Allocation Types tabs, each shown and indexed only when granted → F10.1, F9.1, F8.1, F10
+- teamAllocations/BulkUpload.js:88: bulk upload: drop zone, validation, error list, overlap timeline, confirmations, Add Allocations and Download Error File → F5.4
+- teamAllocations/BulkUpload.js:148-170: a row is exactly five columns with a non-empty username; the email is the lower-cased username plus the company domain → F5
+- teamAllocations/BulkUpload.js:179-199, 678-690, 781-797: all rows valid submits the whole file; some failing offers the valid rest and the error file; none valid offers only the error file; the error file is plain text with one error per line → F5
+- teamAllocations/BulkUpload.js:323-327: eligible employees are Active or Marked Leaver, excluding interns → F4, F5
+- teamAllocations/BulkUpload.js:358-389, 444-449: the email must be a known employee; the team check always passes; same-person rows may not overlap; the type name must exist → F5, F5 (open question 1)
+- teamAllocations/BulkUpload.js:501-538: inverted dates and overlaps with existing allocations are rejected with the overlap kind → F5
+- teamAllocations/BulkUpload.js:633-635: non-CSV files refused → F5.4
+- teamAllocations/BulkUpload.js:735-765: rows become default allocations with the type's default code, status Active, no travel, not recurring, each with an allocation log row → F5, F5.4
+- teamAllocations/TeamAllocations.js:15: team page: workspace with team search, bulk upload, type filter and date search; email and partner tabs disabled; window from the first of last month to three months ahead; earliest date 30 days back → F5.1, F5

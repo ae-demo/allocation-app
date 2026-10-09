@@ -1,0 +1,63 @@
+# backend/modules/database
+
+The app's own MySQL tables: roles and privileges, allocation types, partner consultants, the funding lookups, the report lookups, the dashboard counts and the audit log.
+
+- clients.bal:12-51 (allocationDbClient, partnerDbClient): two configurable MySQL databases, the allocation database and the partner-resources database, each with its connection pool, connect timeout and preferred SSL → not used: how it is built
+- db\_functions.bal: no function deletes a role, renames a role, or creates or deactivates a privilege → F10
+- db\_functions.bal: engagements, allocations, partner consultants, sign-in and authorization denials are never written to the audit log → P6
+- db\_functions.bal: the two databases back roles and privileges, allocation types, partner consultants, engagement types, event names, funding sources, business and product units, regions and the dashboard counts; the allocation-type lookup also feeds the notification recipient rule → domain-model.md, F8
+- db\_functions.bal:14-16: a result stream is closed on error to release the thread to the pool → not used: how it is built
+- db\_functions.bal:79: the products list covers all engagements that are not cancelled → F1
+- db\_functions.bal:97-135, 427-451 (getRoles, getPrivileges, getPrivilegesByRole, getUserPrivileges, getRolesByPrivilege): the role and privilege reads, including a user's privileges from their directory groups → F10.1, P1
+- db\_functions.bal:142-147 (addNewRole): inserts the role, then logs and audits it → F10.2, P6
+- db\_functions.bal:144, 178, 189, 323, 336, 348: each audited action is also written to the application log with the same text → not used: how it is built
+- db\_functions.bal:145, 179, 190: audit entries for a role added, a role's privileges replaced, and a role left with no privileges, each naming the user → P6, F10
+- db\_functions.bal:155-195 (updatePrivilegesForRole): in one transaction all of the role's privileges are deleted and the new set inserted; an empty set leaves the role with none; a SQL error rolls back → F10.1
+- db\_functions.bal:230-281: every partner consultants query runs on the partner database; every other table on the allocation database → not used: how it is built
+- db\_functions.bal:289-299: a partner consultant's allocation count, erroring when no row comes back → F9
+- db\_functions.bal:324, 337, 349: audit entries for an allocation type added, updated and deleted, each naming the user → P6, F8
+- db\_functions.bal:536-542 (addAuditLog): writes one audit row; a failed insert is only error-logged, never returned to the caller → P6
+- db\_queries.bal:15-21 (employee\_job\_band): a colour per job role, read only → F4
+- db\_queries.bal:29-57 (allocation\_type): id, name, status, colour, department, notify-allocations flag, default engagement code, code suffix and engagement type; read where Active or Deleted, optionally by engagement type and status, ordered by name → domain-model.md, F8.1
+- db\_queries.bal:44: an allocation type belongs to one engagement type → domain-model.md
+- db\_queries.bal:46, 400, 435: allocation type status is read as Active or Deleted, inserted as ACTIVE and deleted as Deleted; whether the two spellings compare equal depends on the collation → F8, P5
+- db\_queries.bal:64-75 (engagement\_type): id, name, kind Internal or Customer, and active flag; read only → domain-model.md, F8
+- db\_queries.bal:80-92 (engagement): the distinct account name and code pairs with an engagement → F1.4
+- db\_queries.bal:98-113 (engagement): the distinct product ids of engagements not cancelled, optionally by engagement type name → F1
+- db\_queries.bal:104-105: an engagement names one allocation type, and its engagement type is reached through it → domain-model.md
+- db\_queries.bal:118-126 (roles): id and name; a new role is inserted by name → domain-model.md, F10
+- db\_queries.bal:118-205, 655-681: the role to privilege mapping lives in three tables and is edited at runtime through the roles endpoints → F10 (open question 1)
+- db\_queries.bal:131-141 (privileges): id, name and status; served to the UI where status is active, so display names come from the table → domain-model.md, F10.1
+- db\_queries.bal:147-156 (role\_privilege): role id and privilege id, the many-to-many between roles and privileges → domain-model.md, F10.1
+- db\_queries.bal:162-168: insert a role by name → F10.2
+- db\_queries.bal:175-205: delete all of a role's privileges, then insert the new rows → F10.1
+- db\_queries.bal:213-231 (default\_allocation\_for\_team): a business unit, department and team triple with its one default allocation type, joined to give the type's name, engagement type and default code → domain-model.md, F5, F7
+- db\_queries.bal:237-262 (engcode\_grouping\_gl\_codes): an engagement code's group, account name and GL code, matched exactly or, when the code has a hyphen at the sixth position, on its seventh and eighth characters → domain-model.md, F7
+- db\_queries.bal:267-283 (consultants, partner database): id, names, email, phone, country, partner and status; read where not Deleted → domain-model.md, F9.1, P5
+- db\_queries.bal:276: a partner consultant belongs to one partner company, by name; the partner tab groups by it → domain-model.md, F4.3
+- db\_queries.bal:288-301: the Active partner consultants with names and partner, ordered by partner, for allocation → F4.3, F9
+- db\_queries.bal:308-340: inserting a partner consultant records who added it and when; updating records who updated it and when → F9.2, F9.3
+- db\_queries.bal:347-358: deleting a partner consultant sets status Deleted → F9.3, P5
+- db\_queries.bal:364-372 (allocation): count of allocation rows for one consultant email, whatever their status → F9 (open question 2)
+- db\_queries.bal:378-389 (engagement): the project names of engagements whose allocation type belongs to the Marketing Event type, as the event names already used → F2
+- db\_queries.bal:395-402: insert an allocation type with status ACTIVE → F8.2
+- db\_queries.bal:409-424: update an allocation type's engagement type, department, name, colour, default code, suffix and notify flag → F8.3
+- db\_queries.bal:430-439: deleting an allocation type sets status Deleted → F8.3, P5
+- db\_queries.bal:446-473 (allocation, engagement): the past-date count per engagement type over allocation id, type, engagement, dates and status; leaves out default allocations, cancelled engagements and deleted allocations → F6
+- db\_queries.bal:454-460: an allocation names its allocation type and its engagement; an engagement's funding sources join on its id → domain-model.md
+- db\_queries.bal:460, 469 (engagement\_funding\_source): engagement id and business unit id; the business unit filter joins through it → domain-model.md, F6.2
+- db\_queries.bal:480-545, 585-649: paid counts take the engagement types Paid, Paid Pre Sale and Paid Post Sale, grouped by allocation type name and colour; non-paid counts take the rest → F6
+- db\_queries.bal:551-579: today's count per engagement type needs an Active allocation whose allocation status is Active or Confirmed, on an engagement Confirmed or In Progress or whose request is New or In Progress → F6
+- db\_queries.bal:571: the allocation status counted is Active or Confirmed → F6 (open question 1)
+- db\_queries.bal:655-665: a user's privilege ids are the distinct privileges of the roles whose names equal their directory group names → F10, P1
+- db\_queries.bal:671-681: the role names holding any of a set of privileges, for authorising a request path → F10
+- db\_queries.bal:686-695 (business\_unit): id, name and active flag, as for the three lookups below → domain-model.md
+- db\_queries.bal:700-713 (product\_unit): id, name, active flag, parent business unit, and the customer, marketing and internal flags that say which engagement kinds it can fund → domain-model.md, F2
+- db\_queries.bal:718-742 (region, sub\_region): id, name and active flag; a sub region under its parent region → domain-model.md
+- db\_queries.bal:748-759: an allocation type by id gives its department, name and notify-allocations flag, to route engagement notifications → F8, F2
+- db\_queries.bal:768-777 (audit\_log): resource, action, user, description and a UTC timestamp; actions INSERT, UPDATE and DELETE on the resources ROLE and ALLOCATION\_TYPE → P6
+- types.bal:18-67 (SqlConnectionPoolConfig, MysqlOptionsConfig, AllocationDatabase, PartnerDatabase): connection settings of the two databases → not used: how it is built
+- types.bal:78-128 (PartnerRecord): the partner consultant payload of the update endpoint, a duplicate of the types module's → F9.3
+- types.bal:139-183 (AllocationTypeRecord): the allocation type payload of the update endpoint, a duplicate of the types module's → F8.3
+- types.bal:193-200 (NonAllocatedEngineerDataRequest): a request record with no caller → not used: dead path
+- types.bal:205-207 (RoleRecord): a row of role names, as returned for a privilege set → F10

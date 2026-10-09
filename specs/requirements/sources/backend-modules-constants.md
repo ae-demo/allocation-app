@@ -1,0 +1,27 @@
+# backend/modules/constants
+
+- constants.bal:8 (APP\_NAME): the app's name, injected into every notification → P4
+- constants.bal:9 (EMAIL\_CLOSING\_AND\_SIGNATURE): every notification closes with the internal apps team's sign-off → P4
+- constants.bal:11-12 (EVENT\_ENGAGEMENT\_TYPE, INTERNAL\_ENGAGEMENT\_TYPE): the marketing event and internal engagement type ids → F2
+- constants.bal:13-14 (INTERNAL\_TYPE, CUSTOMER\_TYPE): the two engagement-type kinds; the engagement-types query filters by kind only for these two → F1.2, F2
+- constants.bal:15 (INTERNAL\_ENGAGEMENT\_IDS): an engagement is internal when its type is internal engagement or marketing event → F2, F4
+- constants.bal:17 (PARTNER\_ALLOCATION\_GROUP\_EMAIL\_PREFIX): partner consultants have no mailbox; their alias starts with this prefix, and an allocation whose email carries it is a partner allocation → F9, P10
+- constants.bal:19-22 (TRAVEL\_EXPECTED\_NATURES): the natures that imply travel may need arranging, covering both the event and the engagement vocabulary, compared after trim and lower-case → F3, F1
+- constants.bal:24-35 (ALLOCATION\_STATUS): the ten clearance statuses → F4.6
+- constants.bal:37-39 (ENGAGEMENT\_STATUS): only Cancelled is modelled server-side, the one value that triggers behaviour → F1.7
+- constants.bal:41-49 (REQUEST\_STATUS): the seven request statuses → F1.6, F1, F2
+- constants.bal:51-54 (STATUS): record lifecycle Deleted or Active; only Active allocations are returned by engagement allocation queries → P5
+- constants.bal:56-60 (ACTIONS): the audit actions insert, update and delete → P6
+- constants.bal:62-66 (RESOURCE\_NAMES): audit logs are written only for role and allocation type changes → P6
+- constants.bal:68 (DEFAULT\_LIMIT): page size for every entity fetch loop and for the pre-cancel read of an engagement's allocations → not used: how it is built
+- constants.bal:69 (DEFAULT\_SORT\_ORDER): ascending when a search omits a sort order → P11
+- constants.bal:71-72 (WSO2\_EMAIL\_FORMAT): a company address is letters only with optional hyphenated parts at the company domain; applied to allocation emails and the employee path → P10
+- constants.bal:74-76 (EMAIL\_FORMAT): general email shape, applied to a partner consultant's personal email → F9.2
+- constants.bal:78-79 (JOB\_NUMBER\_FORMAT): the job number shape; no reference outside this module → not used: dead path
+- constants.bal:81-82 (PRINTABLE\_CHARACTERS\_FORMAT): any single-line value; the default constraint for ids, names, codes, statuses and parameters → not used: how it is built
+- constants.bal:84-87 (FREE\_TEXT\_FORMAT): multi-line text for comments, descriptions, addresses, scopes and contact details → not used: how it is built
+- constants.bal:89-90 (NAME\_FORMAT): letters of any script, combining marks, apostrophe, space, dot and hyphen, for partner first and last names → F9
+- constants.bal:92-94 (ISO\_DATE\_TIME\_FORMAT): a date optionally followed by a time; the comment says empty is not allowed but the regex as written also matches the empty string → not used: how it is built
+- constants.bal:96-98 (MOBILE\_NUMBER\_FORMAT): the phone number shape; no reference outside this module → not used: dead path
+- constants.bal:100-101 (MOBILE\_NUMBER\_FORMAT\_OPTIONAL): the same shape or empty, for a partner consultant's phone number → F9.2, F9
+- constants.bal:104-176: validation error messages; four have no reference outside this module → not used: how it is built

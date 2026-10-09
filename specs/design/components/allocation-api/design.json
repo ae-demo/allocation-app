@@ -1,0 +1,22 @@
+{
+  "name": "allocation-api",
+  "type": "service",
+  "version": "0.1.0",
+  "language": "Ballerina",
+  "buildpack": "docker",
+  "appPath": "allocation-api",
+  "entrypoint": "deployment/service",
+  "exposure": "internet",
+  "dependencies": [
+    { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app" },
+    { "kind": "platform-resource", "name": "allocation-db", "resourceType": "postgres-cnpg", "description": "The app's own reference data: allocation types, partner consultants, business/product units, regions/sub regions, engagement codes, team defaults and the audit log." },
+    { "kind": "external", "name": "sales-entity-service", "description": "Reads customer/prospect accounts, their opportunities and opportunity line items to raise and refresh a paid customer engagement." },
+    { "kind": "external", "name": "hr-entity-service", "description": "Reads employees, org structure and reporting lines to staff and notify consultants." },
+    { "kind": "external", "name": "finance-entity-service", "description": "Creates and updates engagements, allocations and funding sources, and reads consultant visas for clearance notices." },
+    { "kind": "external", "name": "email-notifications-service", "description": "Sends every lifecycle notification: engagement raised/updated/approved/cancelled and allocation clearance changes." },
+    { "kind": "external", "name": "consultant-skills-servicenow", "description": "Reads the skill catalogue and searches consultants by skill for the allocation workspace." }
+  ],
+  "description": "The single backend for the Allocations app: raises and tracks customer, internal and marketing-event engagements, routes internal work through approval, allocates and clears consultants, keeps team default allocations, serves the dashboard and the consultant allocations report, and maintains allocation types and partner consultants. Delegates AI skill suggestions to skill-suggestion-agent. Does not send email itself beyond composing and dispatching through email-notifications-service, and holds no UI.",
+  "stories": ["F1.1","F1.2","F1.3","F1.4","F1.5","F1.6","F1.7","F1.8","F1.9","F2.1","F2.2","F2.3","F2.4","F2.5","F3.1","F3.2","F3.3","F4.1","F4.2","F4.3","F4.4","F4.5","F4.6","F4.7","F4.8","F4.9","F5.1","F5.2","F5.3","F5.4","F6.1","F6.2","F7.1","F7.2","F7.3","F8.1","F8.2","F8.3","F9.1","F9.2","F9.3","F10.1","F10.2"],
+  "skillsPinned": ["openapi-conventions", "ballerina", "thunder-authentication", "api-management"]
+}

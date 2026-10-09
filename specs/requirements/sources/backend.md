@@ -1,0 +1,91 @@
+# backend
+
+- service.bal:22 (skillsCache): a small in-memory cache for the skills register, entries kept a day; the only time-based behaviour in the service → not used: how it is built
+- service.bal:24-34: service doc and display label; one interceptable service on one listener port, 54 resource functions of which the backend README documents 9, interceptor chain JwtInterceptor, ResponseInterceptor, ResponseErrorInterceptor → not used: how it is built
+- service.bal:36-39 (get customers): accounts from the sales entity in Customer or Prospect status → F1.1, F1
+- service.bal:56-73 (get customers/{id}/opportunities): a customer's opportunities; the active-only flag is forwarded only when true because the sales entity rejects false (TODO in code) → F1.1
+- service.bal:58, 89, 118, 316, 509, 644, 772, 816, 1072-1600: every path and query parameter is checked against the single-line format, date parameters against the ISO date-time format, the employee path against the company email format; 400 with a named message otherwise → not used: how it is built
+- service.bal:86-87 (get opportunities/{id}/line-items): an opportunity's line items, only those in the configured classifications → F1.1, F1
+- service.bal:116 (get opportunities/line-items/{id}): one line item, used to refresh a paid engagement's dates from the CRM → F1.5
+- service.bal:139-142 (get engagements/{id}): one engagement with its funding sources → F1.5, F2.4, F3.2, F4.1
+- service.bal:181 (post engagements): inserts an engagement with the signed-in user as requester and sends the new-engagement notification → F1.1, F2.1, F2.2
+- service.bal:194-196: customer name and code default to the organization's own account when absent; the TODO says only for internal types, which is not enforced → F2
+- service.bal:227-231, 371-394, 537-541, 720-725: notifications are sent synchronously inside create, patch, allocation update and bulk upload; a failure is logged and the request still succeeds → not used: how it is built
+- service.bal:247-289 (get business-units, product-units, regions, sub-regions): reference lists for forms and filters → F1, F2.2, F3.1, F3.3, F6.2
+- service.bal:300-312 (patch engagements/{id}): edits an engagement, changes its engagement status or request status; the documented uses are status update, complete, reopen and complete from the allocation page → F1.5, F1.6, F1.7, F2.4, F2.5
+- service.bal:346-378: cancelling reads the engagement's active allocations first, applies the update that cancels them and overwrites their clearance status, then notifies the allocated consultants, copying the travel team when a confirmed allocation needed travel; a notification failure does not block the cancellation → F1.7, F1
+- service.bal:379-388: when the status becomes Approved an approval notification is sent, flagged Updated and Approved when detail fields were sent in the same request → F3.2, F3.3
+- service.bal:406-409 (get allocations/{id}): one allocation by id; no frontend caller and no config key → not used: dead path
+- service.bal:436-441 (post allocation-search): allocations by filter, a POST because of the parameter count → F4.7, P11
+- service.bal:457 (post engagement-search/{id}/allocations): one engagement's allocations by filter → F4.1
+- service.bal:482-488 (post get-allocations): allocations for a set of emails with employee details, optionally by allocation type; feeds the timeline and the overlap check → F4.2, F5.1, F4
+- service.bal:505 (patch allocations/{id}): updates status, comment, clearance status, allocation type, engagement code and dates → F4.6, F4.7, F5.3
+- service.bal:533-541: an update whose result has no engagement details is a default allocation and sends no notification; otherwise one goes out when a clearance status was supplied and the transition is one that notifies → F4, F5
+- service.bal:555-556: TODO to settle authorization with the identity platform team → F10 (open question 1)
+- service.bal:561 (get user-privileges): the privileges of the roles carried in the token; no privilege required to call it → P1, P2
+- service.bal:580 (get org-data): organization structure for the given employee statuses → F4.2, F5.1
+- service.bal:601-606 (post engagement-search): engagements by filter, a POST because of the parameter count → F1.4, F2.3, P11
+- service.bal:619-624 (post engagements-approval-search): engagements by filter for the approval queue → F3.1
+- service.bal:637-640 (delete allocations/{id}): sets the allocation's record status to Deleted → F5.3, P5
+- service.bal:662-667 (post allocations/bulk): bulk insert and update of allocations with their logs → F4.2, F4.3, F5.2, F5.4
+- service.bal:676-700: for each distinct non-default engagement of a customer type the caller must hold the matching allocate privilege or the whole request is refused with 403; default allocations and internal engagements skip this check → F4, F10
+- service.bal:707-726: the first new allocation is the main one and any following ones are overheads; the new-allocation notification goes out when the main one is a Confirmed partner allocation or its clearance status is one that notifies; default allocations send none → F4.5, F4, F5
+- service.bal:741-788 (get roles, get privileges, get roles/{id}/privileges): all roles, all active privileges, one role's privileges → F10.1
+- service.bal:795 (post roles): adds a role by name → F10.2
+- service.bal:798-799, 826-827: the user recorded on role writes is the token's email → P6
+- service.bal:813 (patch roles/{id}): replaces a role's privilege list → F10.1
+- service.bal:840 (get employee-job-band-Data): a colour per job role for the timeline → F4.1, F5.1
+- service.bal:857 (get engagement-types): engagement types, optionally by kind and active flag → F1.2, F8.2
+- service.bal:883 (get engagements/accounts): the accounts of every engagement, for the list filters → F1.4, F4.7
+- service.bal:898 (get engagements/products): products that already have an engagement, by engagement type → F1
+- service.bal:922-926 (get default-allocation-data-for-teams): each team's default allocation type → F5, F7
+- service.bal:938-942 (get engagement-code-data): engagement group, GL code and the like per engagement code → F7.2, F7
+- service.bal:964-967 (get partners): partner consultants not marked Deleted → F9.1
+- service.bal:978-981 (get active-partners): partner consultants who can be allocated → F4.3, F9
+- service.bal:997 (post partners): adds a partner consultant → F9.2
+- service.bal:1014 (put partners/{id}): updates a partner consultant → F9.3
+- service.bal:1036-1040 (delete partners/{id}): sets the partner's status to Deleted → F9.3, P5
+- service.bal:1068-1115 (get allocation-count-for-partner-consultant): builds the partner consultant's alias and counts every allocation row for it, regardless of status → F9 (open question 2)
+- service.bal:1117-1121 (get engagements/event-names): names of the marketing events already raised → F2 (open question 2)
+- service.bal:1139 (get allocation-types): allocation types, optionally by engagement type and status → F8.1
+- service.bal:1174 (post allocation-types): adds an allocation type → F8.2
+- service.bal:1192 (put allocation-types/{id}): updates an allocation type → F8.3
+- service.bal:1214-1218 (delete allocation-types/{id}): sets the allocation type's status to Deleted → F8.3, P5
+- service.bal:1239-1317 (get allocation-count-by-engagement-type, paid-allocation-count-by-allocation-type, non-paid-allocation-count-by-allocation-type): dashboard counts for a business unit and optionally a past date, non-paid meaning the two non-paid customer types plus internal; computed in the BFF "until further discussions" → F6.1, F6.2, F6
+- service.bal:1359-1414 (get employees): employees from the HR entity by statuses, excluded employment types, business unit, department and team → F4.2, F5.1, F7.1
+- service.bal:1423-1433 (get consultant-allocations): one consultant's or everyone's allocations with funding sources for a period, optionally by allocation types, business unit, department and team → F7.1
+- service.bal:1526 (get employees/{email}): one employee; the email must be a company address → F4.2, P10
+- service.bal:1547-1555 (get non-allocated-engineers): employees without an allocation in the period → F7
+- service.bal:1618-1667 (get skills, post consultants/search, post skills/recommendations): the skills register from ServiceNow served from the cache, consultant search by skill ids, and skills suggested by the content model from a prompt → F4.8
+- jwt\_interceptor.bal:14: comment that the interceptor handles authorization until an API gateway does → not used: how it is built
+- jwt\_interceptor.bal:17: request interceptor on every path: the forwarded JWT must carry an email, and the method and path must map to a privilege one of the caller's roles holds → P1, F10
+- jwt\_interceptor.bal:20-40: the caller is read from the gateway-forwarded assertion header, not the bearer token; 401 when the header is missing, the JWT undecodable or its email empty; the claims are stored in the request context and the token is deliberately not logged → not used: how it is built
+- jwt\_interceptor.bal:41-57: the path's privilege list is checked against the caller's roles; none held gives 403, a lookup failure an error; denials are logged with the caller's email and path, grants are not → F10
+- jwt\_interceptor.bal:67-78: paths are matched on their first three segments; OPTIONS passes with no privilege check; a method other than the five handled falls through with an empty privilege list and an unclear outcome → not used: how it is built
+- jwt\_interceptor.bal:80-81: GET user-privileges is open to any caller whose JWT decodes with an email → P2
+- jwt\_interceptor.bal:82-370: the method+path to privilege-list table for every route; an unmapped path gets 404 before any resource runs → not used: how it is built; the gates it encodes are F10's decisions
+- jwt\_interceptor.bal:188-191: a holder of the role-settings privilege can grant any privilege, including that one, to any role name; nothing restricts which privileges may be assigned → F10
+- jwt\_interceptor.bal:268-271, 325-328: skills, consultant search and skill suggestions are gated on the customer allocate privilege only, while the find-consultant button also shows on internal engagement allocation pages → F4.8
+- jwt\_interceptor.bal:311-318: bulk allocation is the only route where the post-sale and pre-sale allocate privileges grant access → F4, F10
+- jwt\_interceptor.bal:333-340: the engagement patch gate holds the customer and internal status and request-status privileges and customer edit, but not internal edit or the approve privileges whose frontend routes call it → F2.4, F3.3, F10
+- jwt\_interceptor.bal:362-371: no route deletes or renames a role → F10
+- response\_interceptor.bal:11-13: every response gets the content-type-options, content-security-policy and strict-transport-security headers → not used: how it is built
+- response\_interceptor.bal:22-36: requests rejected before a resource runs (payload binding, constraint failures, unknown paths) are logged at warn as client-induced outcomes rather than incidents, and returned unchanged → not used: how it is built
+- utils.bal:22-40 (jwtDecoder): a user's roles are the groups claim of the forwarded JWT and their identity is its email; the token is only decoded, no validate call appears in this file, so signature verification is not in this code → P1, F10
+- utils.bal:42-57 (checkUserPrivilege): the role names holding any of the required privileges are fetched and access is granted when the caller holds any of them → F10
+- utils.bal:64-67 (getLoggedInUser): the token's email is the identity recorded on writes and in the audit log → P6
+- utils.bal:69-81 (partner consultant address): the alias is the partner group prefix, partner company, first name and last name joined at the company domain, empty parts skipped and spaces replaced; the frontend's copy replaces only the first space → F9, P10
+- utils.bal:94-107 (isUpdated): an engagement counts as updated when any of nature, scope, address, comment, country, contact, dates, allocation type, engagement code or funding sources is present → F1.5, F3.3
+- utils.bal:109-131 (isAllocationAllowed): the post-sale privilege covers Paid Post Sale and Non-Paid Post Sale, the pre-sale privilege Paid Pre Sale and Non-Paid Pre Sale, the customer allocate privilege Paid; any one match grants → F4, F10
+- constants.bal:8-44: 33 privilege constants, one per page or action, mirrored by the frontend with eight spelling differences; the database privileges table is the runtime list; the two view-consultants-column privileges are checked by the frontend only → F10, F1.8
+- constants.bal:19-20: the allocate post-sale and allocate pre-sale consultant privileges → F4, F10
+- constants.bal:39-44: approve internal and approve marketing view, edit and approve privileges → F3, F10
+- constants.bal:46-51: the five customer engagement type ids: Paid, Non-Paid Pre Sale, Non-Paid Post Sale, Paid Post Sale, Paid Pre Sale → F1.2
+- constants.bal:53 (CUSTOMER\_STATUSES): only accounts in Customer or Prospect status are fetched → F1
+- constants.bal:55 (OPPORTUNITY\_CLASSIFICATIONS): only line items in the six configured classifications are fetched → F1
+- constants.bal:57-58 (WSO2\_CUSTOMER\_NAME, WSO2\_CUSTOMER\_CODE): the organization's own customer name and CRM account code, substituted when an engagement is raised without a customer → F2
+- constants.bal:60 (CACHE\_KEY\_SKILLS): the cache key for the skills register → not used: how it is built
+- Ballerina.toml:2-8: observability included, the Ballerina distribution, the package org, name and version → not used: how it is built
+- Config.toml.local: the local configuration's section headers cover the two databases with their pools and options, the entity clients with their auth config, and the email service → not used: how it is built
+- Config.toml.local:41-51: the sending address and the two approver lists are required configurables with no entry in the local configuration → F2 (product-wide open question 2)
+- Dependencies.toml: the Ballerina library modules in use (graphql, http, oauth2, jwt, cache, mysql, sql, constraint, regex, time, task, websocket) → not used: how it is built

@@ -1,0 +1,28 @@
+# backend/README.md
+
+- :1 (title): "Allocation backend service" → not used: how it is built
+- :3: "API v1.0"; the package version in Ballerina.toml is 3.0.0 → not used: how it is built
+- API v1.0 › GET /customers (:5-39): "Get customers for the given customer statuses", no parameter documented and none accepted, the code fixes the statuses to Customer and Prospect; returns id, name and sub region → F1.1, F1
+- API v1.0 › GET /customers/{customerId}/opportunities (:41-89): "Get customer opportunities by customer ID", customerId required → F1.1
+- API v1.0 › GET /customers/{customerId}/opportunities (:53): `isOnlyActiveOpportunities`, "Whether to return only active opportunities or not", documented as a plain required boolean; the code sends false as nil because the sales entity handles only true → F1.1
+- API v1.0 › GET /customers/{customerId}/opportunities (:66-82): an opportunity carries id, name, owner name, pre-sales code, post-sales engagement code, customer address, technical owner and whether it is won → F1.1, F1
+- API v1.0 › GET /opportunities/{opportunityId}/line-items (:91-137): "Get opportunity line items by opportunity ID", opportunityId required → F1.1
+- API v1.0 › GET /opportunities/{opportunityId}/line-items (:115-129): a line item carries id, name, description, auto engagement code, tentative-dates flag, service start and end dates, product unit and business unit → F1.1, F1
+- API v1.0 › GET /engagements/{id}/ (:139-207): "Get engagement by ID" with an example id, which differs from the example in the code's own doc → F1.5, F4.1
+- API v1.0 › GET /engagements/{id}/ (:163-199): an engagement carries type, id, requester, customer, allocation type, opportunity, product, engagement code, nature, country, address, dates, customer contact, business domain, owners, contracts-signed flag, scope, comment, engagement status, request status and funding sources → F1.3, F1
+- API v1.0 › GET /engagements/{id}/ (:189-198): each funding source carries business unit, product unit, region, sub region and percentage, the sample a 50/50 split → F2.2
+- API v1.0 › GET /engagements/{id}/ (:186-187): the sample engagement is "Confirmed" with request status "New" → F1
+- API v1.0 › PATCH /engagements/{id}/ (:209-232): "Edit the engagement, update engagement status, update engagement request status.", 200 or 500 → F1.5, F1.6, F1.7
+- API v1.0 › PATCH /engagements/{id}/ (:215): "Engagement search page -&gt; update engagement status" → F1.7
+- API v1.0 › PATCH /engagements/{id}/ (:216): "If an engagement status IS "Cancelled" -&gt; cancel allocations -&gt; cancel travel requests if any."; the code cancels the allocations and copies the travel team, there is no travel request to cancel → F1.7, prd.md (Fog / open question 3)
+- API v1.0 › PATCH /engagements/{id}/ (:217): "Engagement search page -&gt; complete engagement request, i.e. request status -&gt; Completed" → F1.6
+- API v1.0 › PATCH /engagements/{id}/ (:218): "Engagement search page -&gt; reopen/in-progress engagement, i.e. request status -&gt; In Progress" → F1.6
+- API v1.0 › PATCH /engagements/{id}/ (:219): "Consultant allocation page -&gt; Complete engagement request" → F4.9
+- API v1.0 › PATCH /engagements/{id}/ (not documented): the same PATCH approves an engagement when the status sent is Approved (backend/service.bal) → F3.2
+- API v1.0 › GET /business-units (:234-273): "Get the list of business units", id, name and active flag → F1, F6
+- API v1.0 › GET /product-units (:275-313): "Get the list of product units", with parent and the customer, marketing and internal flags → F2
+- API v1.0 › GET /regions (:315-354): "Get the list of regions", id, name and active flag → F1, F2
+- API v1.0 › GET /sub-regions (:356-397): "Get the list of sub regions", with parent region → F1, F2
+- (whole document): every endpoint lists only 200 and 500; the code also returns 400 on malformed input and the interceptor 401, 403 and 404 → not used: how it is built
+- (whole document): 9 endpoints documented, 8 GET and 1 PATCH → not used: how it is built
+- (not documented): 45 of 54 endpoints → not used: superseded by the code (backend/service.bal)

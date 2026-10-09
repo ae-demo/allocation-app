@@ -1,0 +1,103 @@
+# webapp
+
+- package.json:2-6, 34-42: CRA package with no description, React 17 on react-scripts 5, Asgardeo auth-react as the identity SDK → not used: how it is built
+- public/index.html:8-11, 32: boilerplate meta description; runtime configuration loaded from a config.js served next to the app and read as window.config keys → not used: how it is built
+- public/index.html:27: document title is the app name → prd.md
+- public/manifest.json:2-3: short\_name and name are both the app name → prd.md
+- README.md:1-70: unmodified Create React App boilerplate with no product content → not used: how it is built
+- src/App.js:14-18: AuthProvider wraps the app; a non-exact "/" route renders Main for every path → not used: how it is built
+- src/App.js:23: the NotFoundPage route never matches because the preceding "/" route is not exact → not used: dead path
+- src/Config.js:1-91: AppConfig REST path names; base URL, app UUID and external URLs come from window.config → not used: how it is built
+- src/Config.js:5: CRM record link base joined with the selected product id for "Go to salesforce page" → F1.9
+- src/Config.js:6, 83-86, 93-94, 100-103, 105-109: user guide URL, an API-Key header that no request sends, logo image URLs, help-mail address and subject keys, AUTH\_CONFIG keys → not used: how it is built
+- src/Config.js:36, 67, appUUID, PAGES.BASE\_URL, PAGES.ENGAGEMENTS, PAGES.ENGAGEMENT\_ALLOCATIONS: unused approveEngagement and funding-sources path keys, an unused app UUID, page paths with no route, menu entry or other use → not used: dead path
+- src/Config.js:96-98: APP\_NAME and APP\_DESCRIPTION: manage customer engagements, consultant allocations, team allocations, reports → prd.md
+- src/Config.js:110: sign-in scope is openid, groups and email, so roles come from the token's groups claim → P1, F10
+- src/Config.js:123: PAGES.EVENTS page address referenced only by the commented-out drawer entry, no route mounts it (dead path) → prd.md (Fog), F2 (out of scope)
+- src/Config.js:142-150: the seven engagement types with their ids and labels → F1.2, F2, product-wide.md (Decisions)
+- src/Config.js:139-141, 151-158: current and two legacy names of the organization's own internal account; engagement kinds Internal / Customer and internal sub-kinds Internal / Event → product-wide.md (Decisions), F2
+- src/Config.js:161: a default (team) allocation is one whose engagement id is the -1 sentinel → F5, F4
+- src/Config.js:163-171: request statuses Pending Approval, Approved, New, Updated, In Progress, Completed, Cancelled → F1, F2, F3
+- src/Config.js:173-179: engagement statuses Confirmed, Pending, In Progress, Completed, Cancelled; the backend enum only knows Cancelled → F1, F1 (open question 2)
+- src/Config.js:181-192: the ten allocation clearance statuses, identical to the backend's → F4.6
+- src/Config.js:194: allocation record status defaults to Active when none is set → F6 (open question 1)
+- src/Config.js:196-233: 33 privilege ids mirroring the backend, eight names spelled differently → F10
+- src/Config.js:225: ALLOCATION\_TYPES\_SETTINGS\_PAGE is absent from the Settings route and menu gates, so the Allocation Types tab opens only for a holder of the role or partner settings privilege → F8
+- src/Config.js:235: dates display as yyyy-MM-dd → product-wide.md (Decisions)
+- src/components/Alert.js, BackdropProgress.js, CircularProgressIndeterminate.js, GlobalStyles.js, LoadingSpinner.js, MainStyle.js, UserContext.js: loading overlays, snackbar alert, styles and user-name context → not used: how it is built
+- src/components/ConfirmationDialog.js:13: generic dialog with title, message and button sets per dialog type → not used: how it is built
+- src/components/CSVUploadComponent.js:81: CSV drop zone with a remove-file control → F5.4
+- src/components/DataContext.js:6-65: allocation types and job-band data loaded once, gated on page and allocate privileges → not used: how it is built
+- src/components/DrawerMenuVariant.js:44: "Dashboard" entry gated on the dashboard privilege → F6, F10
+- src/components/DrawerMenuVariant.js:55: "Customer Engagements" entry gated on the customer create, list and allocations page privileges → F1, F10
+- src/components/DrawerMenuVariant.js:65: "Internal Engagements" entry gated on the internal and event create, list and allocations page privileges → F2, F10
+- src/components/DrawerMenuVariant.js:75: "Approve Engagements" entry gated on any of the six approve privileges → F3, F10
+- src/components/DrawerMenuVariant.js:85: "Team Allocations" entry gated on the team allocations privilege → F5, F10
+- src/components/DrawerMenuVariant.js:95: "Reports" entry gated on the report privilege → F7, F10
+- src/components/DrawerMenuVariant.js:105: "Settings" entry gated on the role and partner settings privileges only → F10, F9, F8
+- src/components/DrawerMenuVariant.js:115-124: commented-out "Events" entry to PAGES.EVENTS (dead path) → prd.md (Fog), F2 (out of scope)
+- src/components/DrawerMenuVariant.js:67, 77, 127-197: the internal and approve entries reuse the same list key; "Need help?" panel with a user guide link and a help-mail compose link → not used: how it is built
+- src/components/IdleTimer.js:6-30, 58-70: after 30 idle minutes a "You have been Idle" prompt gives 30 seconds to stay, otherwise the session is cleared → P9
+- src/components/IdleTimer.js:31-52: activity events counted, no cross-tab sync → not used: how it is built
+- src/components/Loading.js: nothing imports it → not used: dead path
+- src/components/LocationDropdown.js: every line commented out, nothing imports it → not used: dead path
+- src/components/Main.js:316-326, 604-650, 1075-1232: fixed app bar with drawer toggle (also opens on hover), logo, title and profile menu; the sign-in card in its loading state → not used: how it is built
+- src/components/Main.js:332-342, 389-431, 472-487, 511-551: auth-context calls, login and logout session flags, tokens cached after login, the app loads only with an access token; a pre-login path is replayed after login when its last segment is alphanumeric and short → not used: how it is built
+- src/components/Main.js:433-470: user privileges fetched after login; zero privileges shows "You are not privileged to view this app" and renders no routes; a fetch failure shows an initialisation error → P2, P1
+- src/components/Main.js:489-493, 900-1074: an unauthenticated user who has not logged out is sent to sign-in automatically; the logged-out card shows logo, app name, description and a "Log In" button → P1
+- src/components/Main.js:517, 537-541: the signed-in email becomes the user name and the token's groups the user's roles → P1, F10
+- src/components/Main.js:568-578, 891: session clear revokes the token, flags the timeout and returns to the root; the idle timer is mounted only inside the privileged layout, so a user with no privileges has none → P9
+- src/components/Main.js:594, 657: the shell renders once authenticated; routes and the idle timer only when privileged, leaving Log Out as the only action otherwise → P2
+- src/components/Main.js:671-679: /dashboard gated on the dashboard privilege → F6, F10
+- src/components/Main.js:681-695: /engagement gated on the customer create, list and allocations page privileges → F1, F10
+- src/components/Main.js:697-707: /engagement/edit/:id gated on the customer edit privilege → F1.5, F10
+- src/components/Main.js:709-718: /allocations/:id gated on the internal allocate privilege or any customer allocate privilege → F4, F10
+- src/components/Main.js:720-730: /team-allocations gated on the team allocations privilege → F5, F10
+- src/components/Main.js:732-742: /report/consultant-allocations gated on the report privilege → F7, F10
+- src/components/Main.js:744-755: /settings gated on the role and partner settings privileges; the allocation types privilege alone does not open it → F10, F9, F8
+- src/components/Main.js:756-774: /internal gated on the internal and event create, list and allocations page privileges → F2, F10
+- src/components/Main.js:776-786: /internal/edit/:id gated on the internal edit privilege → F2.4, F10
+- src/components/Main.js:788-804: /approve/internal-engagements/view, which holds both approval tabs, gated on either approve view privilege → F3.1, F10
+- src/components/Main.js:805-838, 848-881: approve edit and approve routes for internal engagements and for marketing events, each gated on its own edit or approve privilege → F3.3, F3.2, F10
+- src/components/Main.js:839-847: /approve/marketing-events/view has no component; the menu goes to the internal view, which already holds the Marketing Events tab → not used: dead path
+- src/components/Main.js:700-868, 883-889: edit, allocation and approve routes have no drawer entry and /allocations/:id is a literal path; "/" redirects to the dashboard regardless of privilege and any other path renders NotFound → not used: how it is built
+- src/components/NotFound.js:13: logo, app name, "The page does not exist!" → not used: how it is built
+- src/components/OrgStructureContext.js:6, 91-96: org structure loaded once for users holding any page, create, edit, allocate or report privilege → not used: how it is built
+- src/components/OrgStructureDropdowns.js:69: cascading business unit / department / team selects, optionally including partners → F5.1, F4.2
+- src/components/ProfileMenu.js:72-106: the signed-in user's name with a menu holding "Log Out" → P1
+- src/components/TableComponent.js:134: table wrapper with filter box, column sort, previous/next paging and page size → P11
+- src/components/utils/AppConstants.js:4-10, 17-23: submit and update confirmations for an engagement or event → F1, F2
+- src/components/utils/AppConstants.js:11-16: "allocate for this engagement now?" prompt whose handler has no dispatch found → F2 (open question 1)
+- src/components/utils/AppConstants.js:24-27: default-funding-source note defined but never referenced → not used: dead path
+- src/components/utils/AppConstants.js:33-38: request status change confirmation, asked for Completed and In Progress → F1.6
+- src/components/utils/AppConstants.js:39-44: engagement status change confirmation → F1.7
+- src/components/utils/AppConstants.js:50-54: approve confirmation stating the action cannot be undone → F3
+- src/components/utils/AppConstants.js:60-64: delete allocation confirmation → F5.3
+- src/components/utils/AppConstants.js:65-70: overlap with default allocations confirmation; confirming updates the existing defaults → F4
+- src/components/utils/AppConstants.js:71-76: overlap with existing allocations, reload the timeline prompt → F5
+- src/components/utils/AppConstants.js:84-113: bulk upload confirmations: confirm, partial submit, column errors, download the error file, all rows erroneous → F5.4
+- src/components/utils/AppConstants.js:120-129: add role and update privileges confirmations → F10.2, F10.1
+- src/components/utils/AppConstants.js:130-135: role settings info: privileges are managed for directory (LDAP) roles, typing a name adds a role → F10, F10.2
+- src/components/utils/AppConstants.js:141-146, 191-192: partner resources info: the personal email is for reference only; the identity alias is built from the partner group prefix (mirroring the backend constant), partner and names → F9, P10
+- src/components/utils/AppConstants.js:147-151: delete partner consultant confirmation → F9.3
+- src/components/utils/AppConstants.js:157-162: allocation types info says Notify to Allocations No routes to the department's leads, marketing events only to the requester's lead; the service routes to the requester's lead for every type → F8, product-wide.md (open question 1)
+- src/components/utils/AppConstants.js:163-167: delete allocation type confirmation → F8.3
+- src/components/utils/AppConstants.js:179-187, 210, 223-224, 266-267: status chip colours, deep-link segment pattern, filter debounce, placeholder for empty report keys → not used: how it is built
+- src/components/utils/AppConstants.js:194-195: pre/post relax period is zero, so the internal popup's date bounds equal the engagement dates → F4
+- src/components/utils/AppConstants.js:196-198: pre/post overhead of 14 days widens the allocation window and timeline; the per-day overhead length check is commented out → F4.5, F4
+- src/components/utils/AppConstants.js:199-202: past-date limits: five years for customer engagements and engagement allocations, 30 days for internal engagements and default allocations, which also locks default edits and deletes → P7, F1, F2, F4, F5
+- src/components/utils/AppConstants.js:204: Engagement Overhead is the allocation type for preparation and post-engagement overheads → F4.5
+- src/components/utils/AppConstants.js:206: a LEAVE engagement code is reported as the team default allocation → F7, F7 (open question 1)
+- src/components/utils/AppConstants.js:208: timelines default to the Colombo time zone → product-wide.md (Decisions)
+- src/components/utils/AppConstants.js:212: settings lists only ACTIVE allocation types → F8.1
+- src/components/utils/AppConstants.js:214-218: input refusal copy for html-tag-like or logic-like content, and the gateway variant → P8
+- src/components/utils/AppConstants.js:220-221: table page size 30 from offset 0 → P11
+- src/components/utils/AppData.js:256-258: nature options On-site / Off-site for engagements, Physical / Virtual / Hybrid for events → F2, F1.3
+- src/components/utils/FilterByCheckBoxes.js:46: labelled checkbox group that refetches on change → not used: how it is built
+- src/components/utils/http.js:28-35, 63-84: every call sends JSON with a bearer token; 401 refreshes once and retries, 5xx retried up to four tries, other 4xx surface the backend message → not used: how it is built
+- src/components/utils/http.js:40-62: a 403 with a non-JSON body on a write is treated as the gateway blocking suspicious input → P8
+- src/components/utils/oauth.js:47-77: cached tokens, user name and roles (roles never read by any caller); one shared token refresh whose failure clears the session → not used: how it is built
+- src/components/utils/utils.js:14-27: access is granted when the user holds any one of the listed privileges → F10
+- src/components/utils/utils.js:233-248: working days exclude Saturday and Sunday → F7
+- src/components/utils/utils.js:320-333, 363-412: any customer allocate privilege is paid, pre-sale or post-sale; allocate allowed per engagement type: internal needs the internal allocate privilege; paid, pre-sale and post-sale customer types each need their own; type strings naming pre or post fall back to the non-paid ids → F4, F10
+- src/components/utils/utils.js:423-431: input that reads as words followed by a tag is refused; the logical-operator pattern is defined but disabled → P8

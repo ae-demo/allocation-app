@@ -1,0 +1,17 @@
+{
+  "name": "skill-suggestion-agent",
+  "type": "ai-agent",
+  "version": "0.1.0",
+  "language": "TypeScript",
+  "buildpack": "docker",
+  "appPath": "skill-suggestion-agent",
+  "entrypoint": "deployment/ai-agent",
+  "exposure": "internet",
+  "dependencies": [
+    { "kind": "component", "name": "allocation-api", "description": "Reads the current skill catalogue to ground its suggestions." },
+    { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app" }
+  ],
+  "description": "Suggests up to five skills for an engagement's scope, which the allocation manager accepts or adjusts before searching for a matching consultant. Stateless per request: it reads the skill catalogue through allocation-api and returns suggestions, never writes.",
+  "stories": ["F4.8"],
+  "skillsPinned": ["agent-building"]
+}

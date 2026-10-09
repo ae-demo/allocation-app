@@ -1,0 +1,39 @@
+{
+  "name": "hr-entity-service",
+  "resource": {
+    "ref": "hr-entity-service",
+    "name": "hr-entity-service",
+    "description": "Employees with their business unit, department, team and company placement, reporting lines, employment status and final day of employment, and the organization structure with its countries; read only for this product.",
+    "provider": "the organization's HR entity service, backed by the HR information system",
+    "config": [
+      {
+        "key": "HR_ENTITY_SERVICE_CLIENT_ID",
+        "description": "Client id for the client-credentials grant"
+      },
+      {
+        "key": "HR_ENTITY_SERVICE_CLIENT_SECRET",
+        "secret": true,
+        "description": "Client secret for the client-credentials grant"
+      },
+      {
+        "key": "HR_ENTITY_SERVICE_TOKEN_URL",
+        "description": "Token address for the client-credentials grant"
+      },
+      {
+        "key": "HR_ENTITY_SERVICE_URL",
+        "description": "Address of the service's GraphQL interface"
+      }
+    ],
+    "contract": {
+      "type": "graphql",
+      "path": "hr-entity-service.graphql",
+      "origin": "registry"
+    },
+    "consumptionInstructions": "Authenticate with OAuth2 client credentials against the token address and send the bearer token with every GraphQL request. Three queries: `employees(filter, limit, offset)` for staff by employee status, excluded employment types and unit, paged by `limit` and `offset` until an empty page; `employee(email)` for one person's placement, final day of employment and reporting lead, where `reportsToEmail` is null when no lead is recorded; and `orgData(employeeStatuses)` for the organization tree three levels deep with the level count, the countries and a flat list of paths. Employees are identified by work email. The service fronts the HR information system; callers never reach it directly."
+  },
+  "provenance": {
+    "registry": "hr-entity-service/hr-entity-service.graphql",
+    "sha256": "adc1200a39be859f8b474f3f480d92cbe1dd8b1bee44517f993dcdd73a015f65",
+    "readOn": "2026-10-08T06:27:42Z"
+  }
+}

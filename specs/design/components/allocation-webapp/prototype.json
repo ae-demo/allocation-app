@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 3,
+  "name": "Allocations App",
+  "entryScreen": "screen.engagements-list",
+  "roles": [
+    { "id": "Requester", "name": "Requester" },
+    { "id": "Approver", "name": "Approver" },
+    { "id": "AllocationManager", "name": "Allocation Manager" },
+    { "id": "TeamManager", "name": "Team Manager" },
+    { "id": "FinanceAnalyst", "name": "Finance Analyst" },
+    { "id": "Administrator", "name": "Administrator" }
+  ],
+  "states": [
+    { "id": "state.default", "name": "Default" },
+    { "id": "state.empty", "name": "Nothing to show" },
+    { "id": "state.validation-error", "name": "Validation errors" },
+    { "id": "state.failed", "name": "Request failed" }
+  ],
+  "screens": [
+    { "id": "screen.engagements-list", "name": "Engagements", "roleIds": ["Requester"] },
+    { "id": "screen.raise-engagement", "name": "Raise Engagement", "roleIds": ["Requester"] },
+    { "id": "screen.engagement-detail", "name": "Engagement Detail", "roleIds": ["Requester"] },
+    { "id": "screen.edit-engagement", "name": "Edit Engagement", "roleIds": ["Requester"] },
+    { "id": "screen.approval-queue", "name": "Approval Queue", "roleIds": ["Approver"] },
+    { "id": "screen.approval-detail", "name": "Approve Engagement", "roleIds": ["Approver"] },
+    { "id": "screen.allocations-list", "name": "Allocations", "roleIds": ["AllocationManager"] },
+    { "id": "screen.allocation-workspace", "name": "Allocation Workspace", "roleIds": ["AllocationManager"] },
+    { "id": "screen.consultant-search", "name": "Find Consultant", "roleIds": ["AllocationManager"] },
+    { "id": "screen.add-allocation", "name": "Allocate Consultant", "roleIds": ["AllocationManager"] },
+    { "id": "screen.team-timeline", "name": "Team Timeline", "roleIds": ["TeamManager"] },
+    { "id": "screen.add-team-allocation", "name": "Add Default Allocation", "roleIds": ["TeamManager"] },
+    { "id": "screen.bulk-upload", "name": "Bulk Upload", "roleIds": ["TeamManager"] },
+    { "id": "screen.dashboard", "name": "Dashboard", "roleIds": ["FinanceAnalyst"] },
+    { "id": "screen.consultant-report", "name": "Consultant Report", "roleIds": ["FinanceAnalyst"] },
+    { "id": "screen.allocation-types", "name": "Allocation Types", "roleIds": ["Administrator"] },
+    { "id": "screen.allocation-type-form", "name": "Allocation Type", "roleIds": ["Administrator"] },
+    { "id": "screen.partner-consultants", "name": "Partner Consultants", "roleIds": ["Administrator"] },
+    { "id": "screen.partner-consultant-form", "name": "Partner Consultant", "roleIds": ["Administrator"] },
+    { "id": "screen.access-roles", "name": "Access Roles", "roleIds": ["Administrator"] },
+    { "id": "screen.account", "name": "Account", "roleIds": ["Requester", "Approver", "AllocationManager", "TeamManager", "FinanceAnalyst", "Administrator"] },
+    { "id": "screen.settings", "name": "Settings", "roleIds": ["Requester", "Approver", "AllocationManager", "TeamManager", "FinanceAnalyst", "Administrator"] },
+    { "id": "screen.signed-out", "name": "Signed out", "roleIds": ["Requester", "Approver", "AllocationManager", "TeamManager", "FinanceAnalyst", "Administrator"] }
+  ],
+  "flows": [
+    { "id": "flow.raise-track", "name": "Raise and track engagements", "roleId": "Requester",
+      "screenIds": ["screen.engagements-list", "screen.raise-engagement", "screen.engagement-detail", "screen.edit-engagement"] },
+    { "id": "flow.approve", "name": "Approve internal work", "roleId": "Approver",
+      "screenIds": ["screen.approval-queue", "screen.approval-detail"] },
+    { "id": "flow.allocate", "name": "Allocate and clear consultants", "roleId": "AllocationManager",
+      "screenIds": ["screen.allocations-list", "screen.allocation-workspace", "screen.consultant-search", "screen.add-allocation"] },
+    { "id": "flow.team-defaults", "name": "Keep team defaults current", "roleId": "TeamManager",
+      "screenIds": ["screen.team-timeline", "screen.add-team-allocation", "screen.bulk-upload"] },
+    { "id": "flow.dashboard-reporting", "name": "Dashboard and reporting", "roleId": "FinanceAnalyst",
+      "screenIds": ["screen.dashboard", "screen.consultant-report"] },
+    { "id": "flow.admin-settings", "name": "Admin settings", "roleId": "Administrator",
+      "screenIds": ["screen.allocation-types", "screen.allocation-type-form", "screen.partner-consultants", "screen.partner-consultant-form", "screen.access-roles"] }
+  ]
+}

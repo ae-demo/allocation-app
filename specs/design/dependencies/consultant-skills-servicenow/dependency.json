@@ -1,0 +1,39 @@
+{
+  "name": "consultant-skills-servicenow",
+  "resource": {
+    "ref": "consultant-skills-servicenow",
+    "name": "consultant-skills-servicenow",
+    "description": "The register of consultant skills: the skill catalogue, and a search for the consultants who hold a given set of skills, used to staff an engagement.",
+    "provider": "ServiceNow, the organization's instance, through its \"find consultants by skills\" scripted REST API",
+    "config": [
+      {
+        "key": "SERVICENOW_CONSULTANT_SKILLS_CLIENT_ID",
+        "description": "Client id for the client-credentials grant"
+      },
+      {
+        "key": "SERVICENOW_CONSULTANT_SKILLS_CLIENT_SECRET",
+        "secret": true,
+        "description": "Client secret for the client-credentials grant"
+      },
+      {
+        "key": "SERVICENOW_CONSULTANT_SKILLS_TOKEN_URL",
+        "description": "Token address for the client-credentials grant"
+      },
+      {
+        "key": "SERVICENOW_CONSULTANT_SKILLS_URL",
+        "description": "Base address of the scripted REST API on the ServiceNow instance"
+      }
+    ],
+    "contract": {
+      "type": "openapi",
+      "path": "consultant-skills-servicenow.openapi.yaml",
+      "origin": "registry"
+    },
+    "consumptionInstructions": "Authenticate with OAuth2 client credentials against the token address and send the bearer token on every call. Two operations, both under `/find_consultants_by_skills`: `GET …/skills` returns the catalogue as `{ result: [ { sys_id, skill } ] }`; `POST …/consultants` with `{ engagementID: <number>, skill_ids: [<sys_id>] }` returns `{ result: { consultants: [ { sys_id, name, email, skills: [<skill name>] } ] } }`. Every response is wrapped in `result`. Skill ids are ServiceNow system ids and opaque; show the `skill` name, send the `sys_id`. The search can be slow: the current app allows a long timeout and retries server errors a few times."
+  },
+  "provenance": {
+    "registry": "consultant-skills-servicenow/consultant-skills-servicenow.openapi.yaml",
+    "sha256": "49e4d403b235b9d0efb0bda744f12b34ff0a4dfc7e81e3febead62727eee87ba",
+    "readOn": "2026-10-08T06:27:44Z"
+  }
+}

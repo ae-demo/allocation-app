@@ -1,0 +1,1528 @@
+openapi: 3.0.3
+info:
+  title: Allocations API
+  version: 0.1.0
+  description: Engagements, allocations, approvals, team defaults, dashboard, reports and admin reference data.
+servers:
+  - url: /
+security:
+  - oauth2: []
+tags:
+  - name: reference
+  - name: engagements
+  - name: approvals
+  - name: allocations
+  - name: team-allocations
+  - name: directory
+  - name: partner-consultants
+  - name: skills
+  - name: dashboard
+  - name: reports
+  - name: allocation-types
+  - name: access-roles
+
+paths:
+  /engagement-types:
+    get:
+      operationId: listEngagementTypes
+      summary: Engagement types, optionally by kind and active flag
+      tags: [reference]
+      parameters:
+        - name: kind
+          in: query
+          schema: { type: string, enum: [Customer, Internal] }
+        - name: active
+          in: query
+          schema: { type: boolean }
+      responses:
+        '200':
+          description: Engagement types
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/EngagementType' }
+
+  /business-units:
+    get:
+      operationId: listBusinessUnits
+      summary: Active business units
+      tags: [reference]
+      responses:
+        '200':
+          description: Business units
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/BusinessUnit' }
+
+  /product-units:
+    get:
+      operationId: listProductUnits
+      summary: Product units under a business unit
+      tags: [reference]
+      parameters:
+        - name: businessUnitId
+          in: query
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Product units
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/ProductUnit' }
+
+  /regions:
+    get:
+      operationId: listRegions
+      summary: Regions
+      tags: [reference]
+      responses:
+        '200':
+          description: Regions
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Region' }
+
+  /sub-regions:
+    get:
+      operationId: listSubRegions
+      summary: Sub regions under a region
+      tags: [reference]
+      parameters:
+        - name: regionId
+          in: query
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Sub regions
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/SubRegion' }
+
+  /customers:
+    get:
+      operationId: listCustomers
+      summary: Customer and prospect accounts
+      tags: [reference]
+      responses:
+        '200':
+          description: Accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Customer' }
+
+  /customers/{customerId}/opportunities:
+    get:
+      operationId: listCustomerOpportunities
+      summary: A customer's opportunities
+      tags: [reference]
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: activeOnly
+          in: query
+          schema: { type: boolean }
+      responses:
+        '200':
+          description: Opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Opportunity' }
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /opportunities/{opportunityId}/line-items:
+    get:
+      operationId: listOpportunityLineItems
+      summary: An opportunity's line items eligible for engagement
+      tags: [reference]
+      parameters:
+        - name: opportunityId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Line items
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/OpportunityLineItem' }
+        '404':
+          description: Opportunity not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements:
+    get:
+      operationId: listEngagements
+      summary: Every engagement, filterable and searchable
+      tags: [engagements]
+      security: [{ oauth2: [engagements:read] }]
+      parameters:
+        - name: type
+          in: query
+          schema: { type: string }
+        - name: accountName
+          in: query
+          schema: { type: string }
+        - name: allocationTypeId
+          in: query
+          schema: { type: integer }
+        - name: engagementStatus
+          in: query
+          schema: { type: string }
+        - name: requestStatus
+          in: query
+          schema: { type: string }
+        - name: businessUnitId
+          in: query
+          schema: { type: integer }
+        - name: startDate
+          in: query
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          schema: { type: string, format: date }
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20, maximum: 100 }
+        - name: offset
+          in: query
+          schema: { type: integer, default: 0 }
+      responses:
+        '200':
+          description: A page of engagements
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [count, data]
+                properties:
+                  count: { type: integer, description: total matching items }
+                  next: { type: string, nullable: true, description: relative URI of the next page }
+                  previous: { type: string, nullable: true, description: relative URI of the previous page }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Engagement' }
+        '401':
+          description: Not signed in
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    post:
+      operationId: createEngagement
+      summary: Raise a customer, internal or marketing-event engagement
+      tags: [engagements]
+      security: [{ oauth2: [engagements:create] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewEngagement' }
+      responses:
+        '201':
+          description: Engagement raised
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '400':
+          description: Invalid engagement
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401':
+          description: Not signed in
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements/{engagementId}:
+    get:
+      operationId: getEngagement
+      summary: One engagement with its funding sources
+      tags: [engagements]
+      security: [{ oauth2: [engagements:read] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Engagement
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    patch:
+      operationId: updateEngagement
+      summary: Edit an engagement's details
+      tags: [engagements]
+      security: [{ oauth2: [engagements:update] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EngagementEdit' }
+      responses:
+        '200':
+          description: Engagement updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '400':
+          description: Invalid edit
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements/{engagementId}/complete:
+    post:
+      operationId: completeEngagement
+      summary: Mark an engagement request completed
+      tags: [engagements]
+      security: [{ oauth2: [engagements:manage-status] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Engagement completed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements/{engagementId}/reopen:
+    post:
+      operationId: reopenEngagement
+      summary: Reopen a completed engagement request to In Progress
+      tags: [engagements]
+      security: [{ oauth2: [engagements:manage-status] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Engagement reopened
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements/{engagementId}/cancel:
+    post:
+      operationId: cancelEngagement
+      summary: Cancel an engagement, its request and every allocation on it
+      tags: [engagements]
+      security: [{ oauth2: [engagements:manage-status] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Engagement cancelled
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements/{engagementId}/refresh-dates:
+    post:
+      operationId: refreshEngagementDates
+      summary: Refresh a paid engagement's dates from the CRM line item
+      tags: [engagements]
+      security: [{ oauth2: [engagements:update] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Dates refreshed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /approvals:
+    get:
+      operationId: listPendingApprovals
+      summary: Internal engagements and marketing events pending approval
+      tags: [approvals]
+      security: [{ oauth2: [approvals:review] }]
+      parameters:
+        - name: kind
+          in: query
+          schema: { type: string, enum: [InternalEngagement, MarketingEvent] }
+        - name: businessUnitId
+          in: query
+          schema: { type: integer }
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20, maximum: 100 }
+        - name: offset
+          in: query
+          schema: { type: integer, default: 0 }
+      responses:
+        '200':
+          description: A page of pending engagements/events
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [count, data]
+                properties:
+                  count: { type: integer, description: total matching items }
+                  next: { type: string, nullable: true, description: relative URI of the next page }
+                  previous: { type: string, nullable: true, description: relative URI of the previous page }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Engagement' }
+
+  /approvals/{engagementId}/approve:
+    post:
+      operationId: approveEngagement
+      summary: Correct a pending engagement or event and approve it
+      tags: [approvals]
+      security: [{ oauth2: [approvals:approve] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ApprovalCorrection' }
+      responses:
+        '200':
+          description: Engagement approved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Engagement' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /engagements/{engagementId}/allocations:
+    get:
+      operationId: listEngagementAllocations
+      summary: An engagement's allocations
+      tags: [allocations]
+      security: [{ oauth2: [allocations:read] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Allocations
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Allocation' }
+    post:
+      operationId: allocateConsultant
+      summary: Allocate a staff or partner consultant to the engagement
+      tags: [allocations]
+      security: [{ oauth2: [allocations:allocate] }]
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewAllocation' }
+      responses:
+        '201':
+          description: Allocation created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Allocation' }
+        '400':
+          description: Consultant unavailable for the period
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Engagement not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /allocations:
+    get:
+      operationId: searchAllocations
+      summary: Every allocation, filterable and searchable
+      tags: [allocations]
+      security: [{ oauth2: [allocations:read] }]
+      parameters:
+        - name: accountName
+          in: query
+          schema: { type: string }
+        - name: allocationTypeId
+          in: query
+          schema: { type: integer }
+        - name: consultantEmail
+          in: query
+          schema: { type: string }
+        - name: clearanceStatus
+          in: query
+          schema: { type: string }
+        - name: businessUnitId
+          in: query
+          schema: { type: integer }
+        - name: startDate
+          in: query
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          schema: { type: string, format: date }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20, maximum: 100 }
+        - name: offset
+          in: query
+          schema: { type: integer, default: 0 }
+      responses:
+        '200':
+          description: A page of allocations
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [count, data]
+                properties:
+                  count: { type: integer, description: total matching items }
+                  next: { type: string, nullable: true, description: relative URI of the next page }
+                  previous: { type: string, nullable: true, description: relative URI of the previous page }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Allocation' }
+
+  /allocations/{allocationId}:
+    patch:
+      operationId: updateAllocation
+      summary: Change an allocation's clearance status, dates or comment
+      tags: [allocations]
+      security: [{ oauth2: [allocations:manage-clearance] }]
+      parameters:
+        - name: allocationId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AllocationEdit' }
+      responses:
+        '200':
+          description: Allocation updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Allocation' }
+        '400':
+          description: Invalid clearance transition
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Allocation not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /team-allocations:
+    get:
+      operationId: listTeamAllocations
+      summary: A team's default allocations for a date range
+      tags: [team-allocations]
+      security: [{ oauth2: [allocations:read] }]
+      parameters:
+        - name: businessUnitId
+          in: query
+          required: true
+          schema: { type: integer }
+        - name: department
+          in: query
+          required: true
+          schema: { type: string }
+        - name: team
+          in: query
+          required: true
+          schema: { type: string }
+        - name: allocationTypeId
+          in: query
+          schema: { type: integer }
+        - name: startDate
+          in: query
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: Default allocations
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Allocation' }
+    post:
+      operationId: addTeamAllocation
+      summary: Add a default allocation for a team member
+      tags: [team-allocations]
+      security: [{ oauth2: [allocations:manage-team] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewTeamAllocation' }
+      responses:
+        '201':
+          description: Default allocation added
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Allocation' }
+        '400':
+          description: Person already allocated in the period
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /team-allocations/{allocationId}:
+    patch:
+      operationId: updateTeamAllocation
+      summary: Update a default allocation
+      tags: [team-allocations]
+      security: [{ oauth2: [allocations:manage-team] }]
+      parameters:
+        - name: allocationId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AllocationEdit' }
+      responses:
+        '200':
+          description: Default allocation updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Allocation' }
+        '400':
+          description: Allocation too old to edit
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Allocation not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    delete:
+      operationId: removeTeamAllocation
+      summary: Remove a default allocation
+      tags: [team-allocations]
+      security: [{ oauth2: [allocations:manage-team] }]
+      parameters:
+        - name: allocationId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '204':
+          description: Default allocation removed
+        '400':
+          description: Allocation too old to remove
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Allocation not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /team-allocations/bulk-upload:
+    post:
+      operationId: bulkUploadTeamAllocations
+      summary: Upload a CSV of default allocations
+      tags: [team-allocations]
+      security: [{ oauth2: [allocations:manage-team] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        '200':
+          description: Per-row results
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BulkUploadResult' }
+        '400':
+          description: File is not a CSV
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /employees:
+    get:
+      operationId: searchEmployees
+      summary: Employees by email, or by business unit/department/team
+      tags: [directory]
+      parameters:
+        - name: email
+          in: query
+          schema: { type: string }
+        - name: businessUnitId
+          in: query
+          schema: { type: integer }
+        - name: department
+          in: query
+          schema: { type: string }
+        - name: team
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+          description: Employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Employee' }
+
+  /employees/{email}:
+    get:
+      operationId: getEmployee
+      summary: One employee's org placement
+      tags: [directory]
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Employee
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Employee' }
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /org-structure:
+    get:
+      operationId: getOrgStructure
+      summary: The business unit / department / team tree
+      tags: [directory]
+      responses:
+        '200':
+          description: Org structure
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrgStructure' }
+
+  /partner-consultants:
+    get:
+      operationId: listPartnerConsultants
+      summary: Partner-company consultants
+      tags: [partner-consultants]
+      parameters:
+        - name: activeOnly
+          in: query
+          schema: { type: boolean }
+      responses:
+        '200':
+          description: Partner consultants
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/PartnerConsultant' }
+    post:
+      operationId: addPartnerConsultant
+      summary: Add a partner consultant
+      tags: [partner-consultants]
+      security: [{ oauth2: [partner-consultants:manage] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPartnerConsultant' }
+      responses:
+        '201':
+          description: Partner consultant added
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartnerConsultant' }
+        '400':
+          description: Invalid partner consultant
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /partner-consultants/{partnerId}:
+    put:
+      operationId: updatePartnerConsultant
+      summary: Edit or mark left a partner consultant
+      tags: [partner-consultants]
+      security: [{ oauth2: [partner-consultants:manage] }]
+      parameters:
+        - name: partnerId
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPartnerConsultant' }
+      responses:
+        '200':
+          description: Partner consultant updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartnerConsultant' }
+        '404':
+          description: Partner consultant not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    delete:
+      operationId: deletePartnerConsultant
+      summary: Delete a partner consultant with no allocation on record
+      tags: [partner-consultants]
+      security: [{ oauth2: [partner-consultants:manage] }]
+      parameters:
+        - name: partnerId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Partner consultant deleted
+        '400':
+          description: Partner consultant has allocations on record
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Partner consultant not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /skills:
+    get:
+      operationId: listSkills
+      summary: The skill catalogue
+      tags: [skills]
+      security: [{ oauth2: [allocations:allocate] }]
+      responses:
+        '200':
+          description: Skills
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Skill' }
+
+  /consultants/search:
+    post:
+      operationId: searchConsultantsBySkill
+      summary: Find consultants matching a set of skills
+      tags: [skills]
+      security: [{ oauth2: [allocations:allocate] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [skillIds]
+              properties:
+                skillIds: { type: array, items: { type: string } }
+      responses:
+        '200':
+          description: Matching consultants
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Consultant' }
+
+  /dashboard:
+    get:
+      operationId: getDashboard
+      summary: Allocations by engagement type and by allocation type, today or on a past date
+      tags: [dashboard]
+      security: [{ oauth2: [dashboard:read] }]
+      parameters:
+        - name: businessUnitId
+          in: query
+          schema: { type: integer }
+        - name: asOfDate
+          in: query
+          schema: { type: string, format: date, description: at most yesterday }
+      responses:
+        '200':
+          description: Dashboard counts
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DashboardCounts' }
+
+  /reports/consultant-allocations:
+    get:
+      operationId: getConsultantAllocationsReport
+      summary: What every consultant worked on over a period, with cost codes
+      tags: [reports]
+      security: [{ oauth2: [reports:read] }]
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: consultantEmail
+          in: query
+          schema: { type: string }
+        - name: allocationTypeIds
+          in: query
+          schema: { type: array, items: { type: integer } }
+      responses:
+        '200':
+          description: Report rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/ConsultantAllocationRow' }
+
+  /reports/consultant-allocations/export:
+    get:
+      operationId: exportConsultantAllocationsReport
+      summary: Download the consultant allocations report as CSV
+      tags: [reports]
+      security: [{ oauth2: [reports:export] }]
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: consultantEmail
+          in: query
+          schema: { type: string }
+        - name: allocationTypeIds
+          in: query
+          schema: { type: array, items: { type: integer } }
+      responses:
+        '200':
+          description: CSV file
+          content:
+            text/csv:
+              schema: { type: string }
+
+  /allocation-types:
+    get:
+      operationId: listAllocationTypes
+      summary: Active allocation types
+      tags: [allocation-types]
+      parameters:
+        - name: engagementTypeId
+          in: query
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Allocation types
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/AllocationType' }
+    post:
+      operationId: addAllocationType
+      summary: Add an allocation type under an active engagement type
+      tags: [allocation-types]
+      security: [{ oauth2: [allocation-types:manage] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewAllocationType' }
+      responses:
+        '201':
+          description: Allocation type added
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AllocationType' }
+        '400':
+          description: Engagement type is inactive
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /allocation-types/{allocationTypeId}:
+    put:
+      operationId: updateAllocationType
+      summary: Edit an allocation type
+      tags: [allocation-types]
+      security: [{ oauth2: [allocation-types:manage] }]
+      parameters:
+        - name: allocationTypeId
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewAllocationType' }
+      responses:
+        '200':
+          description: Allocation type updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AllocationType' }
+        '404':
+          description: Allocation type not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    delete:
+      operationId: deleteAllocationType
+      summary: Delete an allocation type
+      tags: [allocation-types]
+      security: [{ oauth2: [allocation-types:manage] }]
+      parameters:
+        - name: allocationTypeId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Allocation type deleted
+        '404':
+          description: Allocation type not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /access-roles:
+    get:
+      operationId: listAccessRoles
+      summary: The app's roles and the privileges each holds
+      tags: [access-roles]
+      security: [{ oauth2: [access-roles:read] }]
+      responses:
+        '200':
+          description: Roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/AccessRole' }
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth2/authorize
+          tokenUrl: /oauth2/token
+          scopes:
+            engagements:create: Raise an engagement
+            engagements:read: See engagements
+            engagements:update: Edit an engagement
+            engagements:manage-status: Change an engagement's status
+            approvals:review: See pending approvals
+            approvals:approve: Approve a pending engagement or event
+            allocations:allocate: Allocate a consultant
+            allocations:read: See allocations
+            allocations:manage-clearance: Move an allocation through clearance
+            allocations:manage-team: Manage a team's default allocations
+            dashboard:read: See the dashboard
+            reports:read: Run the consultant allocations report
+            reports:export: Export the report as CSV
+            allocation-types:manage: Manage allocation types
+            partner-consultants:manage: Manage partner consultants
+            access-roles:read: See roles and their privileges
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: integer, description: HTTP or application error code }
+        message: { type: string, description: short human-readable label }
+        description: { type: string, description: detailed explanation }
+        moreInfo: { type: string, description: URI to documentation }
+
+    EngagementType:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        kind: { type: string, enum: [Customer, Internal] }
+        isActive: { type: boolean }
+
+    BusinessUnit:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        isActive: { type: boolean }
+
+    ProductUnit:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        businessUnitId: { type: integer }
+        isCustomer: { type: boolean }
+        isMarketing: { type: boolean }
+        isInternal: { type: boolean }
+        isActive: { type: boolean }
+
+    Region:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+
+    SubRegion:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        regionId: { type: integer }
+
+    Customer:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        status: { type: string, enum: [Customer, Prospect] }
+        subRegion: { type: string }
+
+    Opportunity:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        ownerName: { type: string }
+        preSalesCode: { type: string }
+        postSalesEngagementCode: { type: string }
+        isWon: { type: boolean }
+
+    OpportunityLineItem:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        engagementCodeAuto: { type: string }
+        serviceStartDate: { type: string, format: date }
+        serviceEndDate: { type: string, format: date }
+        isTentativeDates: { type: boolean }
+        productUnit: { type: string }
+        businessUnit: { type: string }
+
+    FundingSource:
+      type: object
+      required: [businessUnit, percentage]
+      properties:
+        businessUnit: { type: string }
+        productUnit: { type: string }
+        region: { type: string }
+        subRegion: { type: string }
+        percentage: { type: number }
+
+    Engagement:
+      type: object
+      properties:
+        id: { type: string }
+        type: { type: string }
+        requesterEmail: { type: string }
+        customerName: { type: string }
+        opportunityName: { type: string }
+        productName: { type: string }
+        engagementCode: { type: string }
+        nature: { type: string }
+        country: { type: string }
+        address: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        customerContact: { type: string }
+        scope: { type: string }
+        requestStatus: { type: string }
+        engagementStatus: { type: string }
+        isContractsSigned: { type: boolean }
+        fundingSources:
+          type: array
+          items: { $ref: '#/components/schemas/FundingSource' }
+        allocatedConsultants:
+          type: array
+          items: { type: string }
+
+    NewEngagement:
+      type: object
+      required: [type, startDate, endDate]
+      properties:
+        type: { type: string }
+        customerId: { type: string }
+        opportunityId: { type: string }
+        lineItemId: { type: string }
+        allocationTypeId: { type: integer }
+        nature: { type: string }
+        country: { type: string }
+        address: { type: string }
+        customerContact: { type: string }
+        scope: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        name: { type: string, description: required for a marketing event }
+        fundingSources:
+          type: array
+          items: { $ref: '#/components/schemas/FundingSource' }
+
+    EngagementEdit:
+      type: object
+      properties:
+        nature: { type: string }
+        country: { type: string }
+        address: { type: string }
+        customerContact: { type: string }
+        scope: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        allocationTypeId: { type: integer }
+        engagementStatus: { type: string }
+        fundingSources:
+          type: array
+          items: { $ref: '#/components/schemas/FundingSource' }
+
+    ApprovalCorrection:
+      type: object
+      properties:
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        subRegion: { type: string }
+        productUnit: { type: string }
+        businessUnit: { type: string }
+        country: { type: string }
+        allocationTypeId: { type: integer }
+
+    Allocation:
+      type: object
+      properties:
+        id: { type: string }
+        engagementId: { type: string, nullable: true, description: absent for a team default allocation }
+        consultantEmail: { type: string }
+        allocationTypeId: { type: integer }
+        engagementCode: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        clearanceStatus: { type: string }
+        isTravelRequired: { type: boolean }
+        isRecurring: { type: boolean }
+        startTime: { type: string }
+        endTime: { type: string }
+        timeZone: { type: string }
+        comment: { type: string }
+
+    NewAllocation:
+      type: object
+      required: [consultantEmail, allocationTypeId, startDate, endDate]
+      properties:
+        consultantEmail: { type: string }
+        allocationTypeId: { type: integer }
+        engagementCode: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        isTravelRequired: { type: boolean }
+        isTentative: { type: boolean }
+        isRecurring: { type: boolean }
+        startTime: { type: string }
+        endTime: { type: string }
+        timeZone: { type: string }
+        comment: { type: string }
+
+    NewTeamAllocation:
+      type: object
+      required: [consultantEmail, allocationTypeId, startDate, endDate]
+      properties:
+        consultantEmail: { type: string }
+        allocationTypeId: { type: integer }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        comment: { type: string }
+
+    AllocationEdit:
+      type: object
+      properties:
+        clearanceStatus: { type: string }
+        allocationTypeId: { type: integer }
+        engagementCode: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        comment: { type: string }
+
+    BulkUploadResult:
+      type: object
+      properties:
+        added: { type: integer }
+        updated: { type: integer }
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row: { type: integer }
+              reason: { type: string }
+
+    Employee:
+      type: object
+      properties:
+        workEmail: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        jobRole: { type: string }
+        company: { type: string }
+        businessUnit: { type: string }
+        department: { type: string }
+        team: { type: string }
+        employmentStatus: { type: string }
+
+    OrgStructure:
+      type: object
+      properties:
+        businessUnits:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              departments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    teams:
+                      type: array
+                      items: { type: string }
+
+    PartnerConsultant:
+      type: object
+      properties:
+        id: { type: integer }
+        partner: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        country: { type: string }
+        personalEmail: { type: string }
+        mobileNumber: { type: string }
+        status: { type: string, enum: [Active, Left] }
+
+    NewPartnerConsultant:
+      type: object
+      required: [partner, firstName, lastName, country, status]
+      properties:
+        partner: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        country: { type: string }
+        personalEmail: { type: string }
+        mobileNumber: { type: string }
+        status: { type: string, enum: [Active, Left] }
+
+    Skill:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+
+    Consultant:
+      type: object
+      properties:
+        name: { type: string }
+        email: { type: string }
+        skills:
+          type: array
+          items: { type: string }
+
+    DashboardCounts:
+      type: object
+      properties:
+        byEngagementType:
+          type: array
+          items:
+            type: object
+            properties:
+              engagementType: { type: string }
+              count: { type: integer }
+              percentage: { type: number }
+        paidByAllocationType:
+          type: array
+          items:
+            type: object
+            properties:
+              allocationType: { type: string }
+              color: { type: string }
+              count: { type: integer }
+              percentage: { type: number }
+        nonPaidByAllocationType:
+          type: array
+          items:
+            type: object
+            properties:
+              allocationType: { type: string }
+              color: { type: string }
+              count: { type: integer }
+              percentage: { type: number }
+
+    ConsultantAllocationRow:
+      type: object
+      properties:
+        engagementType: { type: string }
+        location: { type: string }
+        country: { type: string }
+        allocationType: { type: string }
+        consultantEmail: { type: string }
+        department: { type: string }
+        businessUnit: { type: string }
+        company: { type: string }
+        engagementCode: { type: string }
+        isHourly: { type: boolean }
+        calendarDays: { type: integer }
+        workingDays: { type: integer }
+        workingHours: { type: number }
+        engagementBusinessUnit: { type: string }
+        salesPod: { type: string }
+        engagementGroup: { type: string }
+        accountName: { type: string }
+        glCode: { type: string }
+
+    AllocationType:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        engagementTypeId: { type: integer }
+        department: { type: string }
+        color: { type: string }
+        defaultEngagementCode: { type: string }
+        engagementCodeSuffix: { type: string }
+        notifyAllocationsGroup: { type: boolean }
+        status: { type: string }
+
+    NewAllocationType:
+      type: object
+      required: [name, engagementTypeId, defaultEngagementCode]
+      properties:
+        name: { type: string }
+        engagementTypeId: { type: integer }
+        department: { type: string }
+        color: { type: string }
+        defaultEngagementCode: { type: string }
+        engagementCodeSuffix: { type: string }
+        notifyAllocationsGroup: { type: boolean }
+
+    AccessRole:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+        grants:
+          type: array
+          items: { type: string }

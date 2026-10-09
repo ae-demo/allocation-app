@@ -1,0 +1,56 @@
+# Derived from the product's client code (backend/modules/entity/sales.bal, types.bal) at d14b825.
+# Covers only the operations and fields the Allocations app uses. Not the service's published schema.
+
+type Query {
+  customers(filter: CustomersFilter!, isRealTime: Boolean, limit: Int!, offset: Int!): [Customer!]!
+  opportunities(filter: OpportunityFilter!, isRealTime: Boolean, limit: Int!, offset: Int!): [Opportunity!]!
+  subscriptionLineItems(filter: SubscriptionLineItemFilter!, limit: Int!, offset: Int!): [SubscriptionLineItem!]!
+  subscriptionLineItem(id: String!): SubscriptionLineItem
+}
+
+input CustomersFilter {
+  customerStatuses: [String!]!
+}
+
+input OpportunityFilter {
+  customerId: String!
+  isOnlyActiveOpportunities: Boolean
+}
+
+input SubscriptionLineItemFilter {
+  opportunityId: String!
+  classifications: [String!]!
+}
+
+type Customer {
+  id: String!
+  name: String
+  subRegion: String
+}
+
+type Opportunity {
+  id: String!
+  name: String!
+  owner: User
+  preSalesCode: String
+  postSalesEngagementCode: String
+  customerAddress: String
+  technicalOwner: String
+  isWon: Boolean
+}
+
+type User {
+  name: String
+}
+
+type SubscriptionLineItem {
+  id: String
+  name: String
+  description: String
+  engagementCodeAuto: String
+  isTentativeDates: Boolean
+  serviceStartDate: String
+  serviceEndDate: String
+  productUnit: String
+  businessUnit: String
+}

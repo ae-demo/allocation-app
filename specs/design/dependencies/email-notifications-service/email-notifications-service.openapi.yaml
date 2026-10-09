@@ -1,0 +1,62 @@
+# Derived from the product's client code (backend/modules/email/client.bal, email.bal:726; backend/modules/types/types.bal:1325) at d14b825.
+# Covers only the one operation the Allocations app calls. Not the service's published document.
+openapi: 3.0.3
+info:
+  title: Email notifications service (as used by the Allocations app)
+  version: derived-d14b825
+security:
+  - bearer: []
+paths:
+  /send-smtp-email:
+    post:
+      operationId: sendSmtpEmail
+      summary: Send one templated email on the calling app's behalf
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailFinalRecord"
+      responses:
+        "200":
+          description: Accepted. The product reads nothing from the body.
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: A token from the OAuth2 client-credentials grant at the configured token address.
+  schemas:
+    EmailFinalRecord:
+      type: object
+      required: [appUuid, to, frm, subject, templateId, contentKeyValPairs]
+      properties:
+        appUuid:
+          type: string
+          description: The identifier the service knows the calling app by
+        to:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: Recipient addresses; the service rejects an empty list
+        cc:
+          type: array
+          items:
+            type: string
+        frm:
+          type: string
+          description: Sender address
+        subject:
+          type: string
+        templateId:
+          type: string
+          description: A template registered on the service side
+        contentKeyValPairs:
+          type: object
+          additionalProperties:
+            type: string
+          description: Placeholder values the template renders
