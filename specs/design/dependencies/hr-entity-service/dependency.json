@@ -26,7 +26,7 @@
     ],
     "contract": {
       "type": "graphql",
-      "path": "hr-entity-service.graphql",
+      "path": "schema.graphql",
       "origin": "registry"
     },
     "consumptionInstructions": "Authenticate with OAuth2 client credentials against the token address and send the bearer token with every GraphQL request. Three queries: `employees(filter, limit, offset)` for staff by employee status, excluded employment types and unit, paged by `limit` and `offset` until an empty page; `employee(email)` for one person's placement, final day of employment and reporting lead, where `reportsToEmail` is null when no lead is recorded; and `orgData(employeeStatuses)` for the organization tree three levels deep with the level count, the countries and a flat list of paths. Employees are identified by work email. The service fronts the HR information system; callers never reach it directly."

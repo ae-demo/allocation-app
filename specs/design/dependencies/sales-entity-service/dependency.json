@@ -26,7 +26,7 @@
     ],
     "contract": {
       "type": "graphql",
-      "path": "sales-entity-service.graphql",
+      "path": "schema.graphql",
       "origin": "registry"
     },
     "consumptionInstructions": "Authenticate with OAuth2 client credentials against the token address and send the bearer token with every GraphQL request. Four queries: customers(filter, isRealTime, limit, offset) for accounts by status, opportunities(filter, isRealTime, limit, offset) for one customer's opportunities (optionally active only), subscriptionLineItems(filter, limit, offset) for an opportunity's line items by classification, and subscriptionLineItem(id) for one line item's current service dates. Lists are paged by limit and offset and return an empty page when exhausted; page until empty. Pass isRealTime: true on customers and opportunities to read live CRM data. A line item carries the fields a paid engagement copies: the auto engagement code, tentative-dates flag, service start and end dates, product unit and business unit. The service fronts Salesforce; callers never reach Salesforce directly."
